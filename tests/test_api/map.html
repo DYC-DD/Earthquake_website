@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>台灣地圖 - Leaflet.js</title>
+    <!-- 引入 Leaflet.js 的 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <style>
+      /* 設定地圖容器的大小 */
+      #map {
+        height: 100vh; /* 地圖全屏 */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 地圖容器 -->
+    <div id="map"></div>
+
+    <!-- 引入 Leaflet.js 的 JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      // 初始化地圖，設定中心點為台灣 (經緯度) 和初始縮放層級
+      const map = L.map("map").setView([23.6978, 120.9605], 8);
+
+      // 加入地圖圖層（OpenStreetMap 作為底圖）
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19, // 最大縮放層級
+        attribution:
+          '地圖數據 &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+    </script>
+  </body>
+</html>
