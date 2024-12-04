@@ -1,12 +1,17 @@
 import React from "react";
-import EarthquakeMap from "./components/EarthquakeMap";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import HomePage from "./components/HomePage";
 import "./styles.css";
 
 const App = () => {
   return (
     <div className="App">
-      <h1>地震資訊網站</h1>
-      <EarthquakeMap />
+      <Header />
+      <div className="map-container">
+        <HomePage />
+      </div>
+      <Footer />
     </div>
   );
 };

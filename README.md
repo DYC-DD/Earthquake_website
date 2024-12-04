@@ -21,6 +21,7 @@ earthquake_website/
 │   ├── components/            # 各種 React 元件
 │   │   ├── EarthquakeList.js  # 顯示地震資訊列表的元件
 │   │   ├── EarthquakeMap.js   # 顯示地震地圖的元件（使用 Leaflet.js）
+│   │   ├── Footer.js          # 網站首尾組件
 │   │   └── Header.js          # 網站標題與導航列
 │   │
 │   ├── App.js                 # 主應用邏輯，組合各個元件
