@@ -1,17 +1,30 @@
-// 引入 React 和 react-leaflet 中的地圖相關元件
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-// 引入 Leaflet 的 CSS 樣式，確保地圖樣式正確加載
 import "leaflet/dist/leaflet.css";
 
 const EarthquakeMap = () => {
+  const [zoomLevel, setZoomLevel] = useState(
+    () => (window.innerWidth < 768 ? 7 : 8.2) // 如果螢幕寬度小於 768px，使用縮放層級 7，否則使用 8.2
+  );
+
+  useEffect(() => {
+    const updateZoomLevel = () => {
+      setZoomLevel(window.innerWidth < 768 ? 7 : 8.2);
+    };
+
+    window.addEventListener("resize", updateZoomLevel);
+
+    // 確保在組件卸載時移除事件監聽器
+    return () => window.removeEventListener("resize", updateZoomLevel);
+  }, []);
+
   return (
     <div className="map-container">
       <MapContainer
         center={[23.6978, 120.9605]} // 台灣的中心
-        zoom={8.2} // 初始縮放層級
-        zoomSnap={0.2} // 縮放層級的對齊步長
-        zoomDelta={0.2} // 滾輪或鍵盤縮放的步長
+        zoom={zoomLevel} // 根據狀態設置動態縮放層級
+        zoomSnap={0.2} // 縮放層級可以精確到 0.2
+        zoomDelta={0.2} // 縮放操作時每次增量 0.2
         style={{ height: "100%", width: "100%" }}
       >
         <TileLayer

@@ -130,10 +130,19 @@ body {
   }
 
   .footer {
-    position: fixed; /* 固定在視窗底部 */
     bottom: 0;
     width: 100%; /* 填滿視窗寬度 */
     z-index: 10; /* 確保頁尾不會被其他內容遮擋 */
     background: #0d121b; /* 保持背景色 */
+  }
+
+  .map-page {
+    width: auto; /* 相對於螢幕寬度 */
+    height: auto; /* 佔據螢幕高度的 60% */
+  }
+
+  .map-container {
+    width: 40vh; /* 相對於螢幕寬度 */
+    height: 40vh; /* 佔據螢幕高度的 60% */
   }
 }
