@@ -18,9 +18,7 @@ const HomePage = () => {
 const styles = {
   container: {
     textAlign: "center", // 將內容置中對齊
-    padding: "20px", // 元素內部的間距，確保內容不緊貼邊緣
-    maxWidth: "100vw", // 限制寬度
-    overflow: "hidden", // 防止內容超出
+    // padding: "20px",
   },
   heading: {
     fontSize: "28px", // 設置標題文字大小

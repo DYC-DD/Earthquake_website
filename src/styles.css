@@ -21,14 +21,26 @@ body {
 }
 
 /* ===== 地圖 ===== */
-.map-container {
+.map-page {
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 6px;
   margin: 20px auto;
   background-color: #ffffff;
-  width: 100%; /* 相對於螢幕寬度 */
-  height: 60vh; /* 佔據螢幕高度的 60% */
+  width: auto; /* 相對於螢幕寬度 */
+  height: auto; /* 佔據螢幕高度的 60% */
+  max-width: 950px; /* 最大寬度限制 */
+  max-height: 950px; /* 最大高度限制 */
+}
+
+.map-container {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 6px;
+  margin: auto;
+  background-color: #ffffff;
+  width: 100vh; /* 相對於螢幕寬度 */
+  height: 100vh; /* 佔據螢幕高度的 60% */
   max-width: 800px; /* 最大寬度限制 */
   max-height: 800px; /* 最大高度限制 */
 }

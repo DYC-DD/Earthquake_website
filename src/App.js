@@ -8,7 +8,7 @@ const App = () => {
   return (
     <div className="App">
       <Header />
-      <div className="map-container">
+      <div className="map-page">
         <HomePage />
       </div>
       <Footer />
