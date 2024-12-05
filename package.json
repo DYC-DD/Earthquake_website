@@ -1,4 +1,8 @@
 {
+  "name": "earthquake-website",
+  "version": "1.0.0",
+  "private": true,
+  "homepage": "https://DYC-DD.github.io/Earthquake_website",
   "dependencies": {
     "axios": "^1.7.9",
     "leaflet": "^1.9.4",
@@ -8,7 +12,10 @@
     "react-scripts": "^5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
