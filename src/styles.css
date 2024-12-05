@@ -1,4 +1,4 @@
-/* ===== 全局樣式設定 ===== */
+/* ========== 全局樣式設定 ========== */
 * {
   box-sizing: border-box;
 }
@@ -10,7 +10,7 @@ body {
   height: 100%;
 }
 
-/* ===== 主應用容器 ===== */
+/* ========== 主應用容器 ========== */
 .App {
   text-align: center;
   min-width: 100vw;
@@ -20,7 +20,7 @@ body {
   justify-content: space-between; /* 將內容與頁尾分開 */
 }
 
-/* ===== 地圖 ===== */
+/* ========== 地圖 ========== */
 .map-page {
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -45,7 +45,16 @@ body {
   max-height: 800px; /* 最大高度限制 */
 }
 
-/* ===== 頁尾樣式 ===== */
+/* ========== 地震資訊 ========== */
+.data-page {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 6px;
+  margin: 20px auto;
+  background-color: #ffffff;
+}
+
+/* ========== 頁尾樣式 ========== */
 .footer {
   position: relative;
   width: 100%;
@@ -121,7 +130,7 @@ body {
   }
 }
 
-/* ===== 其他設備樣式 ===== */
+/* ========== 其他設備樣式 ========== */
 @media (max-width: 768px) {
   .App {
     display: flex;
