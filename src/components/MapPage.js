@@ -1,7 +1,7 @@
 import React from "react";
 import EarthquakeMap from "./EarthquakeMap";
 
-const HomePage = () => {
+const MapPage = () => {
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>即時地震地圖</h2>
@@ -23,4 +23,4 @@ const styles = {
   },
 };
 
-export default HomePage;
+export default MapPage;
