@@ -148,10 +148,11 @@ body {
   .map-page {
     width: auto; /* 相對於螢幕寬度 */
     height: auto; /* 佔據螢幕高度的 60% */
+    padding: 4px;
   }
 
   .map-container {
-    width: 40vh; /* 相對於螢幕寬度 */
-    height: 40vh; /* 佔據螢幕高度的 60% */
+    width: 44vh; /* 相對於螢幕寬度 */
+    height: 44vh; /* 佔據螢幕高度的 60% */
   }
 }
