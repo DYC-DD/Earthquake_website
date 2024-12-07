@@ -73,7 +73,7 @@ const EarthquakeData = () => {
     // 設置計時器，每_秒刷新一次數據
     const interval = setInterval(() => {
       fetchEarthquakeData();
-    }, 10000); // 每_秒(單位毫秒)
+    }, 60000); // 每_秒(單位毫秒)
 
     // 在组件卸載时清除定時器
     return () => clearInterval(interval);

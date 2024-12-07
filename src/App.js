@@ -9,11 +9,13 @@ const App = () => {
   return (
     <div className="App">
       <Header />
-      <div className="map-page">
-        <MapPage />
-      </div>
-      <div className="data-page">
-        <DataPage />
+      <div className="content">
+        <div className="map-page">
+          <MapPage />
+        </div>
+        <div className="data-page">
+          <DataPage />
+        </div>
       </div>
       <Footer />
     </div>

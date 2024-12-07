@@ -4,12 +4,12 @@ import "leaflet/dist/leaflet.css";
 
 const EarthquakeMap = () => {
   const [zoomLevel, setZoomLevel] = useState(
-    () => (window.innerWidth < 768 ? 7 : 8.2) // 如果螢幕寬度小於 768px，使用縮放層級 7，否則使用 8.2
+    () => (window.innerWidth < 768 ? 7 : 8.6) // 如果螢幕寬度小於 768px，使用縮放層級 7，否則使用 8.2
   );
 
   useEffect(() => {
     const updateZoomLevel = () => {
-      setZoomLevel(window.innerWidth < 768 ? 7 : 8.2);
+      setZoomLevel(window.innerWidth < 768 ? 7 : 8.6);
     };
 
     window.addEventListener("resize", updateZoomLevel);
