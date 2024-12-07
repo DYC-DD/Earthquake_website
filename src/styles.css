@@ -153,37 +153,43 @@ body {
   .App {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* 保證頁面高度填滿視窗 */
+    min-height: 100vh;
   }
 
   .content {
-    flex-direction: column; /* 手機模式下改為垂直排列 */
-    align-items: center; /* 水平置中 */
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 10px auto;
   }
 
   .map-page {
-    margin-right: 0; /* 移除左右間距 */
-    margin-bottom: 20px; /* 添加下方間距 */
-    width: 100%; /* 相對於螢幕寬度 */
-    height: auto; /* 佔據螢幕高度的 60% */
+    /* margin-right: 0; */
+    /* margin-bottom: 20px; */
+    width: 98%;
+    height: auto;
     padding: 4px;
   }
 
   .map-container {
-    width: 44vh; /* 相對於螢幕寬度 */
-    height: 44vh; /* 佔據螢幕高度的 60% */
+    width: 44vh;
+    height: 44vh;
   }
 
   .data-page {
-    margin-right: 0; /* 移除左右間距 */
-    margin-bottom: 20px; /* 添加下方間距 */
-    width: 100%; /* 滿版顯示 */
+    width: 98%;
+    height: 650px;
+  }
+
+  .data-container {
+    width: 98%;
+    height: 550px;
   }
 
   .footer {
     bottom: 0;
-    width: 100%; /* 填滿視窗寬度 */
-    z-index: 10; /* 確保頁尾不會被其他內容遮擋 */
-    background: #0d121b; /* 保持背景色 */
+    width: 100%;
+    z-index: 10;
+    background: #0d121b;
   }
 }
