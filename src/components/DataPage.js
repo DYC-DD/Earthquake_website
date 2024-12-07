@@ -15,7 +15,7 @@ const DataPage = () => {
 const styles = {
   container: {
     textAlign: "center", // 將內容置中對齊
-    padding: "10px",
+    padding: "20px",
   },
   heading: {
     fontSize: "30px", // 設置標題文字大小

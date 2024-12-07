@@ -88,7 +88,7 @@ const EarthquakeData = () => {
   }
 
   return (
-    <div>
+    <div className="data-container">
       {earthquakes.map((eq, index) => {
         const earthquakeInfo = eq.EarthquakeInfo || {};
         const originTime = earthquakeInfo.OriginTime || "無資料";
