@@ -21,7 +21,6 @@ const EarthquakeData = ({ onLatestEarthquake }) => {
     const url2 = `${baseUrl2}?${params.toString()}`;
 
     try {
-      // 不設置 loading 狀態，以避免界面閃爍
       const [response1, response2] = await Promise.all([
         fetch(url1),
         fetch(url2),
@@ -35,7 +34,6 @@ const EarthquakeData = ({ onLatestEarthquake }) => {
       const data1 = await response1.json();
       const data2 = await response2.json();
 
-      // 合並並按時間降序排序
       const earthquakeList1 = data1.records?.Earthquake || [];
       const earthquakeList2 = data2.records?.Earthquake || [];
 
@@ -50,20 +48,20 @@ const EarthquakeData = ({ onLatestEarthquake }) => {
         return timeB - timeA;
       });
 
-      // 比较新數據與當前數據，僅在數據變化時更新界面
       if (!isEqual(combinedList, earthquakes)) {
         setEarthquakes(combinedList);
 
-        // 在這裡提取最新一則地震資訊的經緯度並透過回呼給父元件
         if (combinedList.length > 0) {
           const latestEq = combinedList[0];
           const epicenter = latestEq.EarthquakeInfo?.Epicenter || {};
           const latitude = epicenter.EpicenterLatitude;
           const longitude = epicenter.EpicenterLongitude;
+          const magnitude =
+            latestEq.EarthquakeInfo?.EarthquakeMagnitude?.MagnitudeValue;
 
-          // 將最新地震資訊 (經緯度) 傳回父元件
+          // 將 magnitude 也一併傳回父元件
           if (onLatestEarthquake) {
-            onLatestEarthquake({ latitude, longitude });
+            onLatestEarthquake({ latitude, longitude, magnitude });
           }
         }
       }
@@ -78,10 +76,7 @@ const EarthquakeData = ({ onLatestEarthquake }) => {
   };
 
   useEffect(() => {
-    // 首次加載數據
     fetchEarthquakeData();
-
-    // 設置計時器，每_秒刷新一次數據
     const interval = setInterval(() => {
       fetchEarthquakeData();
     }, 10000);
