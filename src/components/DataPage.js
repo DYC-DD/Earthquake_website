@@ -1,12 +1,12 @@
 import React from "react";
 import EarthquakeData from "./EarthquakeData";
 
-const DataPage = ({ onLatestEarthquake }) => {
+const DataPage = ({ onRecentEarthquakes }) => {
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>即時地震資訊</h2>
       <div>
-        <EarthquakeData onLatestEarthquake={onLatestEarthquake} />
+        <EarthquakeData onRecentEarthquakes={onRecentEarthquakes} />
       </div>
     </div>
   );

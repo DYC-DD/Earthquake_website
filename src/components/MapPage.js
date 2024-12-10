@@ -1,12 +1,12 @@
 import React from "react";
 import EarthquakeMap from "./EarthquakeMap";
 
-const MapPage = ({ latestEarthquake }) => {
+const MapPage = ({ recentEarthquakes }) => {
   return (
     <div>
-      <h2 style={styles.heading}>即時地震地圖</h2>
+      <h2 style={styles.heading}>即時地震地圖 (過去12小時內)</h2>
       <div>
-        <EarthquakeMap latestEarthquake={latestEarthquake} />
+        <EarthquakeMap recentEarthquakes={recentEarthquakes} />
       </div>
     </div>
   );

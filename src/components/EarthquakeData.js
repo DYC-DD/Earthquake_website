@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import isEqual from "lodash/isEqual";
 
-const EarthquakeData = ({ onLatestEarthquake }) => {
+const EarthquakeData = ({ onRecentEarthquakes }) => {
   const [earthquakes, setEarthquakes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,6 +38,7 @@ const EarthquakeData = ({ onLatestEarthquake }) => {
       const earthquakeList2 = data2.records?.Earthquake || [];
 
       const combinedList = [...earthquakeList1, ...earthquakeList2];
+      // 按照時間排序，最新在最前面
       combinedList.sort((a, b) => {
         const timeA = new Date(
           a.EarthquakeInfo?.OriginTime || "1970-01-01 00:00:00"
@@ -52,16 +53,35 @@ const EarthquakeData = ({ onLatestEarthquake }) => {
         setEarthquakes(combinedList);
 
         if (combinedList.length > 0) {
+          // 最新地震事件
           const latestEq = combinedList[0];
-          const epicenter = latestEq.EarthquakeInfo?.Epicenter || {};
-          const latitude = epicenter.EpicenterLatitude;
-          const longitude = epicenter.EpicenterLongitude;
-          const magnitude =
-            latestEq.EarthquakeInfo?.EarthquakeMagnitude?.MagnitudeValue;
+          const latestTime = new Date(latestEq.EarthquakeInfo?.OriginTime);
 
-          // 將 magnitude 也一併傳回父元件
-          if (onLatestEarthquake) {
-            onLatestEarthquake({ latitude, longitude, magnitude });
+          // 計算12小時前的時間點
+          const twelveHoursAgo = new Date(
+            latestTime.getTime() - 12 * 60 * 60 * 1000
+          );
+
+          // 過濾出12小時內的地震
+          const recentEarthquakes = combinedList.filter((eq) => {
+            const eqTime = new Date(eq.EarthquakeInfo?.OriginTime);
+            return eqTime >= twelveHoursAgo && eqTime <= latestTime;
+          });
+
+          // 將12小時內的地震資料回呼給父元件
+          // 每筆資料都包含 latitude, longitude, magnitude, time 等資訊方便地圖使用
+          const formattedEQs = recentEarthquakes.map((eq) => {
+            const epicenter = eq.EarthquakeInfo?.Epicenter || {};
+            const latitude = epicenter.EpicenterLatitude;
+            const longitude = epicenter.EpicenterLongitude;
+            const magnitude =
+              eq.EarthquakeInfo?.EarthquakeMagnitude?.MagnitudeValue;
+            const originTime = eq.EarthquakeInfo?.OriginTime;
+            return { latitude, longitude, magnitude, originTime };
+          });
+
+          if (onRecentEarthquakes) {
+            onRecentEarthquakes(formattedEQs);
           }
         }
       }
