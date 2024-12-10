@@ -57,18 +57,19 @@ const EarthquakeData = ({ onRecentEarthquakes }) => {
           const latestEq = combinedList[0];
           const latestTime = new Date(latestEq.EarthquakeInfo?.OriginTime);
 
-          // 計算12小時前的時間點
+          // 計算_小時前的時間點
+          const hoursToFetch = 24;
           const twelveHoursAgo = new Date(
-            latestTime.getTime() - 12 * 60 * 60 * 1000
+            latestTime.getTime() - hoursToFetch * 60 * 60 * 1000
           );
 
-          // 過濾出12小時內的地震
+          // 過濾出_小時內的地震
           const recentEarthquakes = combinedList.filter((eq) => {
             const eqTime = new Date(eq.EarthquakeInfo?.OriginTime);
             return eqTime >= twelveHoursAgo && eqTime <= latestTime;
           });
 
-          // 將12小時內的地震資料回呼給父元件
+          // 將_小時內的地震資料回呼給父元件
           // 每筆資料都包含 latitude, longitude, magnitude, time 等資訊方便地圖使用
           const formattedEQs = recentEarthquakes.map((eq) => {
             const epicenter = eq.EarthquakeInfo?.Epicenter || {};
