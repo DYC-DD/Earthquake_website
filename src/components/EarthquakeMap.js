@@ -104,7 +104,7 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
                   radius={radius}
                   color="red" // 圓邊框顏色
                   fillColor="red" // 圓填充顏色
-                  fillOpacity={0.2} // 圓填充透明度
+                  fillOpacity={0.1} // 圓填充透明度
                   weight={2} // 邊框粗細
                   opacity={0.1} // 邊框透明度
                   eventHandlers={{

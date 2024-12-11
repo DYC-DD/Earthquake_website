@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import isEqual from "lodash/isEqual";
 
-const EarthquakeData = ({ onRecentEarthquakes }) => {
+const EarthquakeData = ({ onAllEarthquakes }) => {
   const [earthquakes, setEarthquakes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,7 +38,7 @@ const EarthquakeData = ({ onRecentEarthquakes }) => {
       const earthquakeList2 = data2.records?.Earthquake || [];
 
       const combinedList = [...earthquakeList1, ...earthquakeList2];
-      // 按照時間排序，最新在最前面
+      // 按時間降序排序，最新在最前面
       combinedList.sort((a, b) => {
         const timeA = new Date(
           a.EarthquakeInfo?.OriginTime || "1970-01-01 00:00:00"
@@ -52,38 +52,19 @@ const EarthquakeData = ({ onRecentEarthquakes }) => {
       if (!isEqual(combinedList, earthquakes)) {
         setEarthquakes(combinedList);
 
-        if (combinedList.length > 0) {
-          // 最新地震事件
-          const latestEq = combinedList[0];
-          const latestTime = new Date(latestEq.EarthquakeInfo?.OriginTime);
+        // 將所有取得的地震資料轉換為標準化結構，並全部傳回給 App
+        const formattedEQs = combinedList.map((eq) => {
+          const epicenter = eq.EarthquakeInfo?.Epicenter || {};
+          const latitude = epicenter.EpicenterLatitude;
+          const longitude = epicenter.EpicenterLongitude;
+          const magnitude =
+            eq.EarthquakeInfo?.EarthquakeMagnitude?.MagnitudeValue;
+          const originTime = eq.EarthquakeInfo?.OriginTime;
+          return { latitude, longitude, magnitude, originTime };
+        });
 
-          // 計算_小時前的時間點
-          const hoursToFetch = 24;
-          const twelveHoursAgo = new Date(
-            latestTime.getTime() - hoursToFetch * 60 * 60 * 1000
-          );
-
-          // 過濾出_小時內的地震
-          const recentEarthquakes = combinedList.filter((eq) => {
-            const eqTime = new Date(eq.EarthquakeInfo?.OriginTime);
-            return eqTime >= twelveHoursAgo && eqTime <= latestTime;
-          });
-
-          // 將_小時內的地震資料回呼給父元件
-          // 每筆資料都包含 latitude, longitude, magnitude, time 等資訊方便地圖使用
-          const formattedEQs = recentEarthquakes.map((eq) => {
-            const epicenter = eq.EarthquakeInfo?.Epicenter || {};
-            const latitude = epicenter.EpicenterLatitude;
-            const longitude = epicenter.EpicenterLongitude;
-            const magnitude =
-              eq.EarthquakeInfo?.EarthquakeMagnitude?.MagnitudeValue;
-            const originTime = eq.EarthquakeInfo?.OriginTime;
-            return { latitude, longitude, magnitude, originTime };
-          });
-
-          if (onRecentEarthquakes) {
-            onRecentEarthquakes(formattedEQs);
-          }
+        if (onAllEarthquakes) {
+          onAllEarthquakes(formattedEQs);
         }
       }
 
@@ -97,7 +78,10 @@ const EarthquakeData = ({ onRecentEarthquakes }) => {
   };
 
   useEffect(() => {
+    // 首次加載數據
     fetchEarthquakeData();
+
+    // 定時更新
     const interval = setInterval(() => {
       fetchEarthquakeData();
     }, 10000);
