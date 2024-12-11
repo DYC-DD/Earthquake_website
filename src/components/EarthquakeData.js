@@ -1,12 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import isEqual from "lodash/isEqual";
 
+// 資料顯示元件 (純粹顯示地震資料，不處理動畫)
+const EarthquakeDataDisplay = React.memo(({ earthquakes }) => {
+  return (
+    <div className="data-container">
+      {earthquakes.map((eq, index) => {
+        const earthquakeInfo = eq.EarthquakeInfo || {};
+        const originTime = earthquakeInfo.OriginTime || "無資料";
+        const magnitude =
+          earthquakeInfo.EarthquakeMagnitude?.MagnitudeValue || "無資料";
+        const depth = earthquakeInfo.FocalDepth || "無資料";
+        const epicenter = earthquakeInfo.Epicenter || {};
+        const location = epicenter.Location || "無資料";
+        const earthquakeNo = eq.EarthquakeNo || "無資料";
+        const webLink = eq.Web || "無資料";
+
+        return (
+          <div key={index}>
+            <p>地震編號：{earthquakeNo}</p>
+            <p>地震發生時間：{originTime}</p>
+            <p>地震規模：{magnitude}</p>
+            <p>震源深度：{depth} 公里</p>
+            <p>震央位置：{location}</p>
+            {eq.Web ? (
+              <a href={eq.Web} target="_blank" rel="noopener noreferrer">
+                點此查看詳細報告
+              </a>
+            ) : (
+              webLink
+            )}
+            <hr />
+          </div>
+        );
+      })}
+    </div>
+  );
+});
+
+// 資料取得元件 (純粹專注於資料抓取與更新)
 const EarthquakeData = ({ onAllEarthquakes }) => {
   const [earthquakes, setEarthquakes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchEarthquakeData = async () => {
+  const fetchEarthquakeData = useCallback(async () => {
     const baseUrl1 =
       "https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0016-001";
     const baseUrl2 =
@@ -37,7 +75,6 @@ const EarthquakeData = ({ onAllEarthquakes }) => {
       const earthquakeList1 = data1.records?.Earthquake || [];
       const earthquakeList2 = data2.records?.Earthquake || [];
 
-      // 在取得資料時，為每筆地震新增一個屬性標記來源 (source)
       const taggedList1 = earthquakeList1.map((eq) => ({
         ...eq,
         source: "url1",
@@ -73,7 +110,6 @@ const EarthquakeData = ({ onAllEarthquakes }) => {
           const earthquakeNo = eq.EarthquakeNo;
           const webLink = eq.Web;
 
-          // 將 eq.source 傳遞出去，以便修改顏色
           return {
             latitude,
             longitude,
@@ -97,19 +133,18 @@ const EarthquakeData = ({ onAllEarthquakes }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [earthquakes, onAllEarthquakes]);
 
   useEffect(() => {
     // 首次加載數據
     fetchEarthquakeData();
-
     // 定時更新
     const interval = setInterval(() => {
       fetchEarthquakeData();
     }, 10000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchEarthquakeData]);
 
   if (loading) {
     return <div>加載中...</div>;
@@ -119,43 +154,8 @@ const EarthquakeData = ({ onAllEarthquakes }) => {
     return <div>發生錯誤：{error.message}</div>;
   }
 
-  return (
-    <div className="data-container">
-      {earthquakes.map((eq, index) => {
-        const earthquakeInfo = eq.EarthquakeInfo || {};
-        const originTime = earthquakeInfo.OriginTime || "無資料";
-        const magnitude =
-          earthquakeInfo.EarthquakeMagnitude?.MagnitudeValue || "無資料";
-        const depth = earthquakeInfo.FocalDepth || "無資料";
-        const epicenter = earthquakeInfo.Epicenter || {};
-        const location = epicenter.Location || "無資料";
-        // const latitude = epicenter.EpicenterLatitude || "無資料";
-        // const longitude = epicenter.EpicenterLongitude || "無資料";
-        const earthquakeNo = eq.EarthquakeNo || "無資料";
-        const webLink = eq.Web || "無資料";
-
-        return (
-          <div key={index}>
-            <p>地震編號：{earthquakeNo}</p>
-            <p>地震發生時間：{originTime}</p>
-            <p>地震規模：{magnitude}</p>
-            <p>震源深度：{depth} 公里</p>
-            <p>震央位置：{location}</p>
-            {/* <p>震央經度：{longitude}</p>
-            <p>震央緯度：{latitude}</p> */}
-            {eq.Web ? (
-              <a href={eq.Web} target="_blank" rel="noopener noreferrer">
-                點此查看詳細報告
-              </a>
-            ) : (
-              webLink
-            )}
-            <hr />
-          </div>
-        );
-      })}
-    </div>
-  );
+  // 將資料顯示與元件內部分離，以減少動畫區塊受到影響
+  return <EarthquakeDataDisplay earthquakes={earthquakes} />;
 };
 
 export default EarthquakeData;
