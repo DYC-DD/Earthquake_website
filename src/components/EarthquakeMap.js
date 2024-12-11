@@ -1,4 +1,3 @@
-// export default EarthquakeMap;
 import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Circle, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
@@ -28,7 +27,7 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
   // 自定義圖標樣式，使用一個小紅點
   const customIcon = L.divIcon({
     className: "custom-marker",
-    html: `<div style="width: 5px; height: 5px; background-color: red; border-radius: 50%;"></div>`,
+    html: `<div style="width: 5px; height: 5px; background-color: black; border-radius: 50%;"></div>`,
     iconSize: [5, 5],
     iconAnchor: [2.5, 2.5],
   });
@@ -84,7 +83,7 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution="&copy; OpenStreetMap contributors"
         />
 
         {recentEarthquakes &&
@@ -92,18 +91,25 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
             const lat = parseFloat(eq.latitude);
             const lng = parseFloat(eq.longitude);
             const magnitude = parseFloat(eq.magnitude);
+            const originTime = eq.originTime || "無資料";
+            const earthquakeNo = eq.earthquakeNo || "無資料";
+            const webLink = eq.webLink || "無"; // 新增的網頁連結欄位
+
             if (isNaN(lat) || isNaN(lng)) return null;
 
             const circleCenter = [lat, lng];
             const radius = getRadiusFromMagnitude(magnitude);
+
+            // 新增邏輯：根據 eq.source 判斷顏色 url1 => 綠色 url2 => 紅色
+            const circleColor = eq.source === "url1" ? "green" : "red";
 
             return (
               <React.Fragment key={index}>
                 <Circle
                   center={circleCenter}
                   radius={radius}
-                  color="red" // 圓邊框顏色
-                  fillColor="red" // 圓填充顏色
+                  color={circleColor} // 圓邊框顏色
+                  fillColor={circleColor} // 圓填充顏色
                   fillOpacity={0.1} // 圓填充透明度
                   weight={2} // 邊框粗細
                   opacity={0.1} // 邊框透明度
@@ -115,23 +121,35 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
                         latitude: lat,
                         longitude: lng,
                         magnitude,
-                        originTime: eq.originTime,
+                        originTime,
+                        earthquakeNo,
                         radius,
+                        webLink,
                       });
                     },
                   }}
                 />
 
-                <Marker position={circleCenter} icon={customIcon} opacity={0.4}>
+                <Marker position={circleCenter} icon={customIcon} opacity={0.2}>
                   <Popup>
                     <div>
                       <p>
                         <b>地震資訊</b>
                       </p>
-                      <p>經度：{circleCenter[1]}</p>
-                      <p>緯度：{circleCenter[0]}</p>
-                      <p>規模：{magnitude || "未知"}</p>
+                      <p>地震編號：{earthquakeNo}</p>
+                      <p>地震發生時間：{originTime}</p>
+                      <p>規模：{magnitude}</p>
+                      <p>
+                        經度：{circleCenter[1]} / 緯度：{circleCenter[0]}
+                      </p>
                       <p>影響範圍半徑：約 {Math.round(radius / 1000)} 公里</p>
+                      <a
+                        href={webLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        點此查看詳細報告
+                      </a>
                     </div>
                   </Popup>
                 </Marker>
@@ -148,12 +166,22 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
               <p>
                 <b>地震資訊</b>
               </p>
-              <p>經度：{selectedEq.longitude}</p>
-              <p>緯度：{selectedEq.latitude}</p>
-              <p>規模：{selectedEq.magnitude || "未知"}</p>
+              <p>地震編號：{selectedEq.earthquakeNo}</p>
+              <p>地震發生時間：{selectedEq.originTime}</p>
+              <p>規模：{selectedEq.magnitude}</p>
+              <p>
+                經度：{selectedEq.longitude} / 緯度：{selectedEq.latitude}
+              </p>
               <p>
                 影響範圍半徑：約 {Math.round(selectedEq.radius / 1000)} 公里
               </p>
+              <a
+                href={selectedEq.webLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                點此查看詳細報告
+              </a>
             </div>
           </Popup>
         )}

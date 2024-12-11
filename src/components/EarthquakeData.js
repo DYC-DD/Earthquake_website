@@ -37,7 +37,17 @@ const EarthquakeData = ({ onAllEarthquakes }) => {
       const earthquakeList1 = data1.records?.Earthquake || [];
       const earthquakeList2 = data2.records?.Earthquake || [];
 
-      const combinedList = [...earthquakeList1, ...earthquakeList2];
+      // 在取得資料時，為每筆地震新增一個屬性標記來源 (source)
+      const taggedList1 = earthquakeList1.map((eq) => ({
+        ...eq,
+        source: "url1",
+      }));
+      const taggedList2 = earthquakeList2.map((eq) => ({
+        ...eq,
+        source: "url2",
+      }));
+
+      const combinedList = [...taggedList1, ...taggedList2];
       // 按時間降序排序，最新在最前面
       combinedList.sort((a, b) => {
         const timeA = new Date(
@@ -60,7 +70,19 @@ const EarthquakeData = ({ onAllEarthquakes }) => {
           const magnitude =
             eq.EarthquakeInfo?.EarthquakeMagnitude?.MagnitudeValue;
           const originTime = eq.EarthquakeInfo?.OriginTime;
-          return { latitude, longitude, magnitude, originTime };
+          const earthquakeNo = eq.EarthquakeNo;
+          const webLink = eq.Web;
+
+          // 將 eq.source 傳遞出去，以便修改顏色
+          return {
+            latitude,
+            longitude,
+            magnitude,
+            originTime,
+            earthquakeNo,
+            webLink,
+            source: eq.source,
+          };
         });
 
         if (onAllEarthquakes) {
@@ -107,17 +129,27 @@ const EarthquakeData = ({ onAllEarthquakes }) => {
         const depth = earthquakeInfo.FocalDepth || "無資料";
         const epicenter = earthquakeInfo.Epicenter || {};
         const location = epicenter.Location || "無資料";
-        const latitude = epicenter.EpicenterLatitude || "無資料";
-        const longitude = epicenter.EpicenterLongitude || "無資料";
+        // const latitude = epicenter.EpicenterLatitude || "無資料";
+        // const longitude = epicenter.EpicenterLongitude || "無資料";
+        const earthquakeNo = eq.EarthquakeNo || "無資料";
+        const webLink = eq.Web || "無資料";
 
         return (
           <div key={index}>
+            <p>地震編號：{earthquakeNo}</p>
             <p>地震發生時間：{originTime}</p>
             <p>地震規模：{magnitude}</p>
             <p>震源深度：{depth} 公里</p>
             <p>震央位置：{location}</p>
-            <p>震央經度：{longitude}</p>
-            <p>震央緯度：{latitude}</p>
+            {/* <p>震央經度：{longitude}</p>
+            <p>震央緯度：{latitude}</p> */}
+            {eq.Web ? (
+              <a href={eq.Web} target="_blank" rel="noopener noreferrer">
+                點此查看詳細報告
+              </a>
+            ) : (
+              webLink
+            )}
             <hr />
           </div>
         );
