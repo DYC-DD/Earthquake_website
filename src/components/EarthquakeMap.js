@@ -162,7 +162,7 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
             position={popupPosition}
             onClose={() => setPopupPosition(null)}
           >
-            <div>
+            <div className="noto-sans-sc">
               <p>
                 <b>地震資訊</b>
               </p>

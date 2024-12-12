@@ -32,7 +32,7 @@ const MapPage = ({ allEarthquakes }) => {
   };
 
   return (
-    <div>
+    <div className="noto-sans-sc">
       <h2 style={styles.heading}>即時地震地圖</h2>
       <EarthquakeMap recentEarthquakes={filteredEarthquakes} />
       <div className="controls">

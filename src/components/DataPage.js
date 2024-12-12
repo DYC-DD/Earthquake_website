@@ -3,7 +3,7 @@ import EarthquakeData from "./EarthquakeData";
 
 const DataPage = ({ onAllEarthquakes }) => {
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className="noto-sans-sc">
       <h2 style={styles.heading}>即時地震資訊</h2>
       <div>
         <EarthquakeData onAllEarthquakes={onAllEarthquakes} />

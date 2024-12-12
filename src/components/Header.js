@@ -2,7 +2,7 @@ import React from "react";
 
 const Header = () => {
   return (
-    <header style={styles.header}>
+    <header style={styles.header} className="noto-sans-sc">
       <h1 style={styles.title}>地震資訊網站</h1>
       <nav style={styles.nav}>
         <a href="#home" style={styles.link}>
@@ -28,7 +28,7 @@ const styles = {
   },
   title: {
     margin: 0,
-    fontSize: "24px",
+    fontSize: "26px",
   },
   nav: {
     marginTop: "10px",
