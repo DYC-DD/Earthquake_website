@@ -3,6 +3,10 @@ import isEqual from "lodash/isEqual";
 
 // 資料顯示元件 (純粹顯示地震資料，不處理動畫)
 const EarthquakeDataDisplay = React.memo(({ earthquakes }) => {
+  const formatLocation = (location) => {
+    if (!location) return "無資料";
+    return location.replace("(位於", "<br/>(位於");
+  };
   return (
     <div className="data-container">
       {earthquakes.map((eq, index) => {
@@ -22,7 +26,11 @@ const EarthquakeDataDisplay = React.memo(({ earthquakes }) => {
             <p>地震發生時間：{originTime}</p>
             <p>地震規模：{magnitude}</p>
             <p>震源深度：{depth} 公里</p>
-            <p>震央位置：{location}</p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: `震央位置：${formatLocation(location)}`,
+              }}
+            ></p>
             {eq.Web ? (
               <a href={eq.Web} target="_blank" rel="noopener noreferrer">
                 點此查看詳細報告

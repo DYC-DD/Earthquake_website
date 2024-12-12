@@ -38,23 +38,49 @@ body {
   flex-wrap: nowrap;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+hr {
+  border: none;
+  border-top: 2px dashed #ccc;
+  margin: 15px 15px;
+}
+
 /* ========== 地圖 ========== */
 .map-page {
-  border: 1px solid #ccc;
+  border: 1px solid #3e4346;
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: #242729;
   display: flex;
   width: 1050px;
   height: 1100px;
   justify-content: center;
   align-items: center;
+  color: #e2e8f0;
+}
+
+.map-heading {
+  font-size: 30px;
+  margin: 5px 0 5px 0;
+}
+
+.controls select {
+  padding: 2px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #3e4346;
+  font-size: 15px;
+  color: #e2e8f0;
 }
 
 .map-container {
-  border: 1px solid #ccc;
+  border: 1px solid #3e4346;
   border-radius: 10px;
   padding: 6px;
-  background-color: #ffffff;
+  background-color: #242729;
   width: 1000px;
   height: 1000px;
   margin: 10px auto;
@@ -64,12 +90,17 @@ body {
 .data-page {
   display: flex;
   justify-content: center;
-  align-items: center;
-  border: 1px solid #ccc;
+  border: 1px solid #3e4346;
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: #242729;
   width: 525px;
   height: 1100px;
+  color: #e2e8f0;
+}
+
+.data-heading {
+  font-size: 30px;
+  margin: 10px 0 5px 0;
 }
 
 .data-container {
@@ -77,6 +108,29 @@ body {
   height: 1000px;
   overflow-y: auto;
   scrollbar-width: none;
+}
+
+/* ========== 頁首樣式 ========== */
+.header {
+  background-color: #101213; /* 背景顏色 */
+  padding: 10px 20px; /* 上下內邊距 10px，左右內邊距 20px */
+  color: white; /* 文字顏色 */
+  text-align: center; /* 內容置中對齊 */
+}
+
+.header-title {
+  margin: 0; /* 移除預設外邊距 */
+  font-size: 26px; /* 字體大小 */
+}
+
+.header-nav {
+  margin-top: 10px; /* 與標題的間距 */
+}
+
+.header-link {
+  margin: 0 10px; /* 左右間距 10px */
+  color: white; /* 文字顏色 */
+  text-decoration: none; /* 移除連結下劃線 */
 }
 
 /* ========== 頁尾樣式 ========== */
@@ -123,10 +177,11 @@ body {
   font-size: 0.9rem;
   background-color: #1f2733;
   border-radius: 0.4rem;
-  padding: 0.7rem 1rem;
+  padding: 0.6rem 1rem;
   margin-right: 1rem;
   box-shadow: 0 0.1rem 0.2rem rgb(0 0 0 / 20%), 0 0.1rem 0.5rem rgb(0 0 0 / 30%),
     0 0.2rem 1.5rem rgb(0 0 0 / 40%);
+  white-space: nowrap;
   span {
     font-size: 1.2rem;
     color: #8398b6;
@@ -168,6 +223,11 @@ body {
     align-items: center;
     width: 100%;
     margin: 10px auto;
+  }
+
+  .data-container p {
+    word-wrap: break-word;
+    line-height: 1.5;
   }
 
   .map-page {

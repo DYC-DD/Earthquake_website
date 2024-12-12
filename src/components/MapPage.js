@@ -33,7 +33,7 @@ const MapPage = ({ allEarthquakes }) => {
 
   return (
     <div className="noto-sans-sc">
-      <h2 style={styles.heading}>即時地震地圖</h2>
+      <h2 className="map-heading">即時地震地圖</h2>
       <EarthquakeMap recentEarthquakes={filteredEarthquakes} />
       <div className="controls">
         {/* 下拉選單選擇時間範圍 */}
@@ -55,13 +55,6 @@ const MapPage = ({ allEarthquakes }) => {
       </div>
     </div>
   );
-};
-
-const styles = {
-  heading: {
-    fontSize: "30px",
-    margin: "0 0 10px 0",
-  },
 };
 
 export default MapPage;

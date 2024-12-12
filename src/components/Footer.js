@@ -2,8 +2,8 @@ import React from "react";
 
 // 定義標籤文字內容的常量陣列，模擬程式開發相關的熱門技術
 const TAGS = [
-  "HTML",
-  "CSS",
+  "交通部中央氣象署",
+  "地震測報中心",
   "JavaScript",
   "Typescript",
   "Tailwind",
@@ -66,22 +66,24 @@ const Tag = ({ text }) => (
 // 頁尾元件
 const Footer = () => {
   return (
-    <footer className="footer">
-      <div className="tag-list">
-        {[...new Array(ROWS)].map((_, i) => (
-          <InfiniteLoopSlider
-            key={i}
-            duration={random(DURATION - 5000, DURATION + 5000)}
-            reverse={i % 2}
-          >
-            {generateTags(shuffle(TAGS), TAGS_PER_ROW).map((tag, index) => (
-              <Tag text={tag} key={`${tag}-${index}`} />
-            ))}
-          </InfiniteLoopSlider>
-        ))}
-        <div className="fade" />
-      </div>
-    </footer>
+    <div className="noto-sans-sc">
+      <footer className="footer">
+        <div className="tag-list">
+          {[...new Array(ROWS)].map((_, i) => (
+            <InfiniteLoopSlider
+              key={i}
+              duration={random(DURATION - 5000, DURATION + 5000)}
+              reverse={i % 2}
+            >
+              {generateTags(shuffle(TAGS), TAGS_PER_ROW).map((tag, index) => (
+                <Tag text={tag} key={`${tag}-${index}`} />
+              ))}
+            </InfiniteLoopSlider>
+          ))}
+          <div className="fade" />
+        </div>
+      </footer>
+    </div>
   );
 };
 
