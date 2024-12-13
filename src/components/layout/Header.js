@@ -1,18 +1,19 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
     <header className="header noto-sans-sc">
-      <a href="/public/index.html" className="header-title header-link">
+      <Link to="/" className="header-title header-link">
         地震資訊網站
-      </a>
+      </Link>
       <nav className="header-nav">
-        <a href="/public/index.html" className="header-link">
+        <Link to="/" className="header-link">
           首頁
-        </a>
-        <a href="#about" className="header-link">
+        </Link>
+        <Link to="/knowledge" className="header-link">
           地震小知識
-        </a>
+        </Link>
         <a href="#contact" className="header-link">
           聯絡我們
         </a>
