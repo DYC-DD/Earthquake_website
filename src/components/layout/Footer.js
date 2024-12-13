@@ -1,18 +1,18 @@
 import React from "react";
 
 const TAGS = [
-  "交通部中央氣象署",
+  "DENG ©",
+  "交通部",
   "地震測報中心",
-  "JavaScript",
-  "Typescript",
-  "Tailwind",
+  "氣象資料開放平台",
+  "中央氣象署",
   "React",
-  "Next.js",
-  "Gatsby",
-  "UI/UX",
-  "SVG",
-  "animation",
+  "JavaScript",
+  "HTML / CSS",
+  "Github Pages",
+  "Leaflet.js",
   "webdev",
+  "2024",
 ];
 
 // 動畫的基準持續時間，單位為毫秒

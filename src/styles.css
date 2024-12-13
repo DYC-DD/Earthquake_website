@@ -87,7 +87,7 @@ hr {
 }
 
 .earthquake-info {
-  background-color: #485265;
+  background-color: #525252;
   color: #e2e8f0;
 }
 
@@ -96,11 +96,11 @@ hr {
 }
 
 .leaflet-popup-content-wrapper {
-  background-color: #485265;
+  background-color: #525252;
 }
 
 .leaflet-popup-tip {
-  background-color: #485265;
+  background-color: #525252;
 }
 
 /* ========== 地震資訊 ========== */
@@ -138,6 +138,7 @@ hr {
 .header-title {
   margin: 0;
   font-size: 26px;
+  font-weight: bold;
 }
 
 .header-nav {

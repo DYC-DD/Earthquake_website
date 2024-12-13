@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import MapPage from "./components/MapPage";
-import DataPage from "./components/DataPage";
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
+import MapPage from "./components/home/MapPage";
+import DataPage from "./components/home/DataPage";
 import "./styles.css";
 
 const App = () => {
