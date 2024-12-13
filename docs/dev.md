@@ -29,3 +29,48 @@ earthquake_website/
 ```
 
 ---
+
+### 交通部中央氣象署 API
+
+1. [交通部中央氣象署](https://www.cwa.gov.tw/V8/C/)
+
+2. [氣象資料開放平台](https://opendata.cwa.gov.tw/index)
+
+- **Tag**
+
+  - **地震資訊**
+
+    - `EarthquakeNo`: 地震編號。
+    - `Web`: 報告的網頁連結。
+    - `OriginTime`: 地震發生時間。
+    - `FocalDepth`: 地震深度。
+    - `Epicenter`
+      - `Location`: 震央地點。
+    - `EarthquakeMagnitude`
+      - `MagnitudeValue`: 地震芮氏規模值。
+
+  - **資訊標籤**
+
+    - `EarthquakeNo`: 地震編號。
+    - `OriginTime`: 地震發生時間。
+    - `Epicenter`
+      - `EpicenterLatitude`: 震央的緯度。
+      - `EpicenterLongitude`: 震央的經度。
+    - `EarthquakeMagnitude`
+      - `MagnitudeValue`: 地震芮氏規模值。
+
+- **Requests**
+
+  - **限制**
+    - 24 (H) / 20000 (Times) = 4.32 (S)
+    - 24 (H) / 2 (GB)
+  - **估計**
+    - 86400 (S) / 5 (S) = 17280 (次)
+    - 17280 (次) \* 60 (KB) = 1036800 (KB) ≈ 0.989 (GB)
+
+---
+
+### Dev
+
+`npm run build`：打包成成靜態檔案。  
+`npm run deploy`：部署到 GitHub Pages。
