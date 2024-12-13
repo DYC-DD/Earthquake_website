@@ -93,7 +93,7 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
             const magnitude = parseFloat(eq.magnitude);
             const originTime = eq.originTime || "無資料";
             const earthquakeNo = eq.earthquakeNo || "無資料";
-            const webLink = eq.webLink || "無"; // 新增的網頁連結欄位
+            const webLink = eq.webLink || "無";
 
             if (isNaN(lat) || isNaN(lng)) return null;
 
@@ -132,7 +132,7 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
 
                 <Marker position={circleCenter} icon={customIcon} opacity={0.2}>
                   <Popup>
-                    <div>
+                    <div className="earthquake-info noto-sans-sc">
                       <p>
                         <b>地震資訊</b>
                       </p>
@@ -162,7 +162,7 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
             position={popupPosition}
             onClose={() => setPopupPosition(null)}
           >
-            <div className="noto-sans-sc">
+            <div className="earthquake-info noto-sans-sc">
               <p>
                 <b>地震資訊</b>
               </p>

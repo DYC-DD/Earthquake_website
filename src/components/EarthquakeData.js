@@ -149,7 +149,7 @@ const EarthquakeData = ({ onAllEarthquakes }) => {
     // 定時更新
     const interval = setInterval(() => {
       fetchEarthquakeData();
-    }, 10000);
+    }, 5000); // 每_毫秒更新(5秒)
 
     return () => clearInterval(interval);
   }, [fetchEarthquakeData]);

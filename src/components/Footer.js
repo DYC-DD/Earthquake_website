@@ -1,6 +1,5 @@
 import React from "react";
 
-// 定義標籤文字內容的常量陣列，模擬程式開發相關的熱門技術
 const TAGS = [
   "交通部中央氣象署",
   "地震測報中心",
@@ -23,10 +22,7 @@ const DURATION = 80000;
 const ROWS = 3;
 const TAGS_PER_ROW = 30;
 
-// 工具函數：生成指定範圍內的隨機整數
 const random = (min, max) => Math.floor(Math.random() * (min - min)) + min;
-
-// 工具函數：將陣列隨機打亂，返回新的隨機排列
 const shuffle = (arr) => [...arr].sort(() => 0.5 - Math.random());
 
 // 動態生成足夠的標籤數量
@@ -63,7 +59,6 @@ const Tag = ({ text }) => (
   </div>
 );
 
-// 頁尾元件
 const Footer = () => {
   return (
     <div className="noto-sans-sc">

@@ -6,7 +6,7 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   overflow-x: hidden;
-  background-color: #181a1b;
+  background-color: #1f1f1f;
   height: 100%;
 }
 
@@ -24,7 +24,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 將內容與頁尾分開 */
+  justify-content: space-between;
 }
 
 /* ========== 主內容 ========== */
@@ -51,9 +51,9 @@ hr {
 
 /* ========== 地圖 ========== */
 .map-page {
-  border: 1px solid #3e4346;
+  border: 1px solid #525252;
   border-radius: 10px;
-  background-color: #242729;
+  background-color: #333333;
   display: flex;
   width: 1050px;
   height: 1100px;
@@ -71,28 +71,45 @@ hr {
   padding: 2px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  background-color: #3e4346;
+  background-color: #474747;
   font-size: 15px;
   color: #e2e8f0;
 }
 
 .map-container {
-  border: 1px solid #3e4346;
+  border: 1px solid #525252;
   border-radius: 10px;
   padding: 6px;
-  background-color: #242729;
+  background-color: #474747;
   width: 1000px;
   height: 1000px;
   margin: 10px auto;
+}
+
+.earthquake-info {
+  background-color: #485265;
+  color: #e2e8f0;
+}
+
+.earthquake-info a {
+  color: inherit;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: #485265;
+}
+
+.leaflet-popup-tip {
+  background-color: #485265;
 }
 
 /* ========== 地震資訊 ========== */
 .data-page {
   display: flex;
   justify-content: center;
-  border: 1px solid #3e4346;
+  border: 1px solid #525252;
   border-radius: 10px;
-  background-color: #242729;
+  background-color: #333333;
   width: 525px;
   height: 1100px;
   color: #e2e8f0;
@@ -112,32 +129,32 @@ hr {
 
 /* ========== 頁首樣式 ========== */
 .header {
-  background-color: #101213; /* 背景顏色 */
-  padding: 10px 20px; /* 上下內邊距 10px，左右內邊距 20px */
-  color: white; /* 文字顏色 */
-  text-align: center; /* 內容置中對齊 */
+  background-color: #141414;
+  padding: 10px 20px;
+  color: white;
+  text-align: center;
 }
 
 .header-title {
-  margin: 0; /* 移除預設外邊距 */
-  font-size: 26px; /* 字體大小 */
+  margin: 0;
+  font-size: 26px;
 }
 
 .header-nav {
-  margin-top: 10px; /* 與標題的間距 */
+  margin-top: 10px;
 }
 
 .header-link {
-  margin: 0 10px; /* 左右間距 10px */
-  color: white; /* 文字顏色 */
-  text-decoration: none; /* 移除連結下劃線 */
+  margin: 0 10px;
+  color: white;
+  text-decoration: none;
 }
 
 /* ========== 頁尾樣式 ========== */
 .footer {
   position: relative;
   width: 100%;
-  background: #101213;
+  background: #141414;
   color: #f8fafc;
   padding: 0.5rem;
   text-align: center;
@@ -146,7 +163,6 @@ hr {
   margin-top: auto;
 }
 
-/* 滾動區塊樣式 */
 .tag-list {
   width: auto;
   max-width: 90%;
@@ -173,9 +189,9 @@ hr {
   display: flex;
   align-items: center;
   gap: 0 0.2rem;
-  color: #e2e8f0;
+  color: #e3e5e9;
   font-size: 0.9rem;
-  background-color: #1f2733;
+  background-color: #1f1f1f;
   border-radius: 0.4rem;
   padding: 0.6rem 1rem;
   margin-right: 1rem;
@@ -184,7 +200,7 @@ hr {
   white-space: nowrap;
   span {
     font-size: 1.2rem;
-    color: #8398b6;
+    color: #777777;
   }
 }
 
@@ -192,10 +208,10 @@ hr {
   pointer-events: none;
   background: linear-gradient(
     90deg,
-    #101213,
+    #0a0a0a,
     transparent 30%,
     transparent 70%,
-    #101213
+    #0a0a0a
   );
   position: absolute;
   inset: 0;
@@ -231,8 +247,6 @@ hr {
   }
 
   .map-page {
-    /* margin-right: 0; */
-    /* margin-bottom: 20px; */
     width: 98%;
     height: auto;
     padding: 4px;
@@ -257,6 +271,6 @@ hr {
     bottom: 0;
     width: 100%;
     z-index: 10;
-    background: #0d121b;
+    background: #161616;
   }
 }

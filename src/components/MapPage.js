@@ -36,7 +36,6 @@ const MapPage = ({ allEarthquakes }) => {
       <h2 className="map-heading">即時地震地圖</h2>
       <EarthquakeMap recentEarthquakes={filteredEarthquakes} />
       <div className="controls">
-        {/* 下拉選單選擇時間範圍 */}
         顯示範圍：
         <select
           value={selectedHours}
