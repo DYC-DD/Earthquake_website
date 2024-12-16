@@ -14,9 +14,9 @@ const Header = () => {
         <Link to="/knowledge" className="header-link">
           地震小知識
         </Link>
-        <a href="#contact" className="header-link">
+        <Link to="/Contact" className="header-link">
           聯絡我們
-        </a>
+        </Link>
       </nav>
     </header>
   );
