@@ -75,7 +75,9 @@ earthquake_website/
 `npm run build`：打包成成靜態檔案。  
 `npm run deploy`：部署到 GitHub Pages。
 
-P-wave & S-wave GIF：[網站](https://imgur.com/a/s-wave-p-wave-JgO35p5)
+Wave GIF：[網站](https://imgur.com/a/laSshHT)
 
-- `<img src="https://i.imgur.com/hscCO7U.gif" alt="S型波" />`
-- `<img src="https://i.imgur.com/OjZEFNO.gif" alt="P型波" />`
+- `<img src="https://i.imgur.com/BkZCq7E.gif" alt="S波" />`
+- `<img src="https://i.imgur.com/LRDR8d8.gif" alt="P波" />`
+- `<img src="https://i.imgur.com/zVuUJTh.gif" alt="Love波" />`
+- `<img src="https://i.imgur.com/vpdbWi7.gif" alt="Rayleigh波" />`

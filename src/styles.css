@@ -228,44 +228,6 @@ hr {
   scrollbar-width: none;
 }
 
-/* ========== 地震小知識 ========== */
-.knowledge-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  border: 1px solid #525252;
-  border-radius: 10px;
-  background-color: #333333;
-  width: 500px;
-  height: 500px;
-  color: #e2e8f0;
-  padding: 20px;
-}
-
-.knowledge-content {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 10px;
-  margin: 40px auto;
-  max-width: 2000px;
-  flex-wrap: nowrap;
-  text-align: left;
-}
-
-.knowledge-page h1 {
-  font-size: 30px;
-}
-
-.knowledge-page p {
-  font-size: 18px;
-}
-
-.knowledge-page li {
-  font-size: 18px;
-}
-
 /* ========== 其他設備樣式 ========== */
 @media (max-width: 768px) {
   .App {

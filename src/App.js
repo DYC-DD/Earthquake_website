@@ -20,7 +20,6 @@ const App = () => {
       <div className="App">
         <Header />
         <Routes>
-          {/* 新增一個重定向（Redirect）邏輯，確保未指定路徑時進入首頁 */}
           <Route path="*" element={<Navigate to="/" />} />
           <Route
             path="/"
