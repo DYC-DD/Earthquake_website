@@ -164,20 +164,19 @@ h3 {
   background-color: #333333;
   display: flex;
   width: 1050px;
-  height: 1100px;
+  height: 1180px;
   justify-content: center;
-  align-items: center;
   color: #e2e8f0;
 }
 
 .map-heading {
   font-size: 30px;
-  margin: 5px 0 5px 0;
+  margin: 15px 0 15px 0;
 }
 
 .controls select {
-  padding: 2px;
-  border: 1px solid #ccc;
+  padding: 2.5px;
+  border: 1px solid #e2e8f0;
   border-radius: 20px;
   background-color: #474747;
   font-size: 15px;
@@ -191,7 +190,7 @@ h3 {
   background-color: #474747;
   width: 1000px;
   height: 1000px;
-  margin: 10px auto;
+  margin: 10px auto 15px auto;
 }
 
 .earthquake-info {
@@ -211,6 +210,29 @@ h3 {
   background-color: #525252;
 }
 
+.text-with-dot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.green-dot {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(0, 255, 0, 0.3);
+  border-radius: 50%;
+}
+
+.red-dot {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 0, 0, 0.4);
+  border-radius: 50%;
+}
+
 /* ========== 地震資訊 ========== */
 .data-page {
   display: flex;
@@ -219,18 +241,18 @@ h3 {
   border-radius: 10px;
   background-color: #333333;
   width: 525px;
-  height: 1100px;
+  height: 1180px;
   color: #e2e8f0;
 }
 
 .data-heading {
   font-size: 30px;
-  margin: 10px 0 5px 0;
+  margin: 15px 0 15px 0;
 }
 
 .data-container {
   width: 500px;
-  height: 1000px;
+  height: 1080px;
   overflow-y: auto;
   scrollbar-width: none;
 }
@@ -418,8 +440,8 @@ h3 {
   }
 
   .map-container {
-    width: 44vh;
-    height: 44vh;
+    width: 50vh;
+    height: 50vh;
   }
 
   .data-page {

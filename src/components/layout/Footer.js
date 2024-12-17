@@ -11,7 +11,6 @@ const TAGS = [
   "HTML / CSS",
   "Github Pages",
   "Leaflet.js",
-  "webdev",
   "2024",
 ];
 
