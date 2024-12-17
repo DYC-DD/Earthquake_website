@@ -150,6 +150,13 @@ hr {
   margin: 15px 15px;
 }
 
+h1 {
+  margin-top: 10px;
+}
+h3 {
+  margin-top: 10px;
+}
+
 /* ========== 地圖 ========== */
 .map-page {
   border: 1px solid #525252;
@@ -257,6 +264,7 @@ hr {
   gap: 20px;
   width: 1300px;
   margin: 0 auto;
+  margin-bottom: 20px;
 }
 
 .wave-item {
@@ -290,6 +298,97 @@ hr {
   width: 400px;
   margin: 0 auto;
   margin-top: auto;
+}
+
+.knowledge-container2 {
+  width: 1300px;
+  background-color: #333333;
+  border: 1px solid #525252;
+  border-radius: 10px;
+  text-align: center;
+  padding: 10px;
+  padding-inline: 30px;
+  margin-bottom: 20px;
+}
+
+.knowledge-container2 ul {
+  padding: 0;
+  list-style-type: disc;
+  text-align: left;
+  padding-left: 250px;
+  flex: 1;
+  font-size: 16px;
+  margin-top: 6px;
+}
+
+.knowledge-container2 h2 {
+  margin-bottom: 0px;
+}
+
+.knowledge-container2 p {
+  margin-top: 6px;
+}
+
+.wave-container2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 1300px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+.wave-item-left {
+  grid-column: span 1;
+  background-color: #333333;
+  border: 1px solid #525252;
+  border-radius: 10px;
+  padding: 20px;
+  padding-inline: 30px;
+  color: #e2e8f0;
+  flex-direction: column;
+}
+
+.wave-item-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wave-item-box {
+  background-color: #333333;
+  border: 1px solid #525252;
+  border-radius: 10px;
+  padding: 20px;
+  color: #e2e8f0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-inline: 30px;
+}
+
+.wave-item-left h2 {
+  margin-top: 35px;
+  margin-bottom: 0px;
+}
+
+.wave-item-left ul {
+  padding: 0;
+  list-style-type: disc;
+  text-align: left;
+  padding-left: 110px;
+  flex: 1;
+  font-size: 16px;
+  margin-top: 6px;
+}
+
+.wave-item-box h1 {
+  margin-bottom: 4px;
+  /* margin-top: 10px; */
+}
+
+.wave-item-box p {
+  margin-bottom: 4px;
 }
 
 /* ========== 其他設備樣式 ========== */
@@ -344,7 +443,7 @@ hr {
     display: flex;
     flex-direction: column;
     width: 98%;
-    margin: 0 auto;
+    margin: 0 auto 10px auto;
     gap: 10px;
   }
 
@@ -366,9 +465,34 @@ hr {
     padding: 8px;
     padding-inline: 20px;
   }
+
+  .knowledge-container2 {
+    width: 98%;
+    margin-bottom: 10px;
+    padding: 8px;
+    padding-inline: 20px;
+  }
+
+  .wave-container2 {
+    display: flex;
+    flex-direction: column;
+    width: 98%;
+    margin: 0 auto;
+    gap: 10px;
+  }
+
+  .knowledge-container2 ul,
+  .wave-item-left ul {
+    /* text-align: center; */
+    padding-left: 30px;
+  }
+
+  .wave-item-right {
+    gap: 10px;
+  }
 }
 
-/* ============================ */
+/* ========== 聯絡我們 ========== */
 /* 專屬 ContactPage 的樣式 */
 .contact-page {
   height: 100vh;
