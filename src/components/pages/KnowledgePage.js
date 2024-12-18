@@ -1,10 +1,49 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 
 const KnowledgePage = () => {
+  const addHoverEffect = (element) => {
+    const shadowRef = document.createElement("div");
+    shadowRef.className = "hover-shadow";
+    element.appendChild(shadowRef);
+
+    const handleMouseMove = (event) => {
+      const rect = element.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      shadowRef.style.left = `${x}px`;
+      shadowRef.style.top = `${y}px`;
+    };
+
+    const handleMouseEnter = () => shadowRef.classList.add("active");
+    const handleMouseLeave = () => shadowRef.classList.remove("active");
+
+    element.addEventListener("mousemove", handleMouseMove);
+    element.addEventListener("mouseenter", handleMouseEnter);
+    element.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      element.removeEventListener("mousemove", handleMouseMove);
+      element.removeEventListener("mouseenter", handleMouseEnter);
+      element.removeEventListener("mouseleave", handleMouseLeave);
+      element.removeChild(shadowRef);
+    };
+  };
+
+  useEffect(() => {
+    const hoverElements = document.querySelectorAll(".hover-effect");
+    const cleanupFunctions = Array.from(hoverElements).map((element) =>
+      addHoverEffect(element)
+    );
+
+    return () => {
+      cleanupFunctions.forEach((cleanup) => cleanup());
+    };
+  }, []);
+
   return (
     <div className="content">
       <div className="knowledge-page noto-sans-sc ">
-        <div className="knowledge-container">
+        <div className="knowledge-container hover-effect">
           <h1>地震的基本概念</h1>
           <p>
             地震是地球內部能量突然釋放所造成的地面震動，這種能量的釋放通常是由地殼中的岩層斷裂或移動引起的，並在瞬間釋放大量能量，形成震波向四周傳播。
@@ -16,7 +55,7 @@ const KnowledgePage = () => {
         </div>
 
         <div className="wave-container">
-          <div className="wave-item">
+          <div className="wave-item hover-effect">
             <h3>P波（主要波）</h3>
             <ul>
               <li>速度最快的地震波，是地震儀最早捕捉到的震波。</li>
@@ -28,7 +67,7 @@ const KnowledgePage = () => {
             <img src="https://i.imgur.com/CBkQxk2.gif" alt="P波" />
           </div>
 
-          <div className="wave-item">
+          <div className="wave-item hover-effect">
             <h3>S波（次要波）</h3>
             <ul>
               <li>傳遞速度較P波慢，但對地表的影響更大。</li>
@@ -38,7 +77,7 @@ const KnowledgePage = () => {
             <img src="https://i.imgur.com/05kws0p.gif" alt="S波" />
           </div>
 
-          <div className="wave-item">
+          <div className="wave-item hover-effect">
             <h3>瑞利波（Rayleigh波）</h3>
             <ul>
               <li>
@@ -54,7 +93,7 @@ const KnowledgePage = () => {
             <img src="https://i.imgur.com/vHhYN2J.gif" alt="Rayleigh波" />
           </div>
 
-          <div className="wave-item">
+          <div className="wave-item hover-effect">
             <h3>拉夫波（Love波）</h3>
             <ul>
               <li>一種表面波，導致地面水平晃動，對建築物結構產生顯著影響。</li>
@@ -65,7 +104,7 @@ const KnowledgePage = () => {
           </div>
         </div>
 
-        <div className="knowledge-container2">
+        <div className="knowledge-container2 hover-effect">
           <h1>地震的形成機制</h1>
           <p>
             地殼由多個板塊組成，這些板塊在地球內部熱能驅動下不斷運動，可能相撞、分離或彼此滑動，這些運動現象稱為板塊構造。
@@ -90,7 +129,7 @@ const KnowledgePage = () => {
           </p>
         </div>
 
-        <div className="knowledge-container2">
+        <div className="knowledge-container2 hover-effect">
           <h1>地震的量化及制訂</h1>
           <p>
             地震的規模和深度是描述地震強度及其影響的重要參數，透過這些數據可幫助科學家進一步評估地震造成的破壞程度和影響範圍。
@@ -128,7 +167,7 @@ const KnowledgePage = () => {
         </div>
 
         <div className="wave-container2">
-          <div className="wave-item-left">
+          <div className="wave-item-left hover-effect">
             <h1>地震的預防與減災</h1>
             <p>
               地震的預防和減災措施包括地震預測技術的發展、地震預警系統的應用，以及建築抗震設計的改進。雖然科學家目前無法準確預測地震的時間和地點，但透過監測板塊活動與斷層運動可以估算高風險地區。地震預警系統利用P波的快速傳遞特性，能在破壞性S波到達之前發出警報，為人們爭取反應時間。
@@ -164,7 +203,7 @@ const KnowledgePage = () => {
           </div>
 
           <div className="wave-item-right">
-            <div className="wave-item-box">
+            <div className="wave-item-box hover-effect">
               <h1>地震的影響</h1>
               <p>
                 地震的影響範圍廣泛，包括對建築物、基礎設施的破壞，以及對人類生活的深遠影響。建築物在地震波的震動下可能倒塌，尤其是未採用抗震設計的老舊建築。
@@ -179,7 +218,7 @@ const KnowledgePage = () => {
               </p>
             </div>
 
-            <div className="wave-item-box">
+            <div className="wave-item-box hover-effect">
               <h1>歷史重大地震案例</h1>
               <p>
                 2011年日本東北大地震、2008年中國汶川地震和2004年印尼蘇門答臘地震都是歷史上影響深遠的地震事件。這些地震不僅造成大量人員傷亡，也導致基礎設施毀壞與經濟損失，對當地社會帶來深遠影響。

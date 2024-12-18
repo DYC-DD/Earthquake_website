@@ -614,3 +614,26 @@ h3 {
     scale: 1.2;
   }
 }
+
+/* ========== 光影效果 ========== */
+.hover-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-shadow {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  box-shadow: 0px 0px 100px 80px rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.8s, transform 0.8s;
+  pointer-events: none;
+}
+
+.hover-shadow.active {
+  opacity: 1;
+  transform: scale(1.5);
+}
