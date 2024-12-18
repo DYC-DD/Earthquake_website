@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Earthquake_website/static/css/main.7208c3c6.css",
-    "main.js": "/Earthquake_website/static/js/main.85307d5f.js",
+    "main.css": "/Earthquake_website/static/css/main.ea25fbe5.css",
+    "main.js": "/Earthquake_website/static/js/main.737b6f92.js",
     "index.html": "/Earthquake_website/index.html",
-    "main.7208c3c6.css.map": "/Earthquake_website/static/css/main.7208c3c6.css.map",
-    "main.85307d5f.js.map": "/Earthquake_website/static/js/main.85307d5f.js.map"
+    "main.ea25fbe5.css.map": "/Earthquake_website/static/css/main.ea25fbe5.css.map",
+    "main.737b6f92.js.map": "/Earthquake_website/static/js/main.737b6f92.js.map"
   },
   "entrypoints": [
-    "static/css/main.7208c3c6.css",
-    "static/js/main.85307d5f.js"
+    "static/css/main.ea25fbe5.css",
+    "static/js/main.737b6f92.js"
   ]
 }
