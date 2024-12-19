@@ -10,6 +10,7 @@ import Footer from "./components/layout/Footer";
 import EQMapPage from "./components/home/EarthquakeMapPage";
 import EQDataPage from "./components/home/EarthquakeDataPage";
 import WXMapPage from "./components/home/WeatherMapPage";
+import WXDataPage from "./components/home/WeatherDataPage";
 import KnowledgePage from "./components/pages/KnowledgePage";
 import ContactPage from "./components/pages/ContactPage";
 import "./styles.css";
@@ -46,7 +47,9 @@ const App = () => {
                 <div className="map-page">
                   <WXMapPage />
                 </div>
-                <div className="data-page"></div>
+                <div className="data-page">
+                  <WXDataPage />
+                </div>
               </div>
             }
           />
