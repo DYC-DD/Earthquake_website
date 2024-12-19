@@ -8,7 +8,7 @@ import {
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import EQMapPage from "./components/home/EarthquakeMapPage";
-import DataPage from "./components/home/DataPage";
+import EQDataPage from "./components/home/EarthquakeDataPage";
 import WXMapPage from "./components/home/WeatherMapPage";
 import KnowledgePage from "./components/pages/KnowledgePage";
 import ContactPage from "./components/pages/ContactPage";
@@ -31,7 +31,7 @@ const App = () => {
                   <EQMapPage allEarthquakes={allEarthquakes} />
                 </div>
                 <div className="data-page">
-                  <DataPage onAllEarthquakes={setAllEarthquakes} />
+                  <EQDataPage onAllEarthquakes={setAllEarthquakes} />
                 </div>
               </div>
             }

@@ -1,7 +1,7 @@
 import React from "react";
 import EarthquakeData from "./EarthquakeData";
 
-const DataPage = ({ onAllEarthquakes }) => {
+const EarthquakeDataPage = ({ onAllEarthquakes }) => {
   return (
     <div className="noto-sans-sc">
       <h2 className="data-heading">即時地震資訊</h2>
@@ -12,4 +12,4 @@ const DataPage = ({ onAllEarthquakes }) => {
   );
 };
 
-export default DataPage;
+export default EarthquakeDataPage;
