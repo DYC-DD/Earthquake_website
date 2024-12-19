@@ -7,9 +7,9 @@ import {
 } from "react-router-dom";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
-import MapPage from "./components/home/MapPage";
+import EQMapPage from "./components/home/EarthquakeMapPage";
 import DataPage from "./components/home/DataPage";
-import WeatherMap from "./components/home/WeatherMap";
+import WXMapPage from "./components/home/WeatherMapPage";
 import KnowledgePage from "./components/pages/KnowledgePage";
 import ContactPage from "./components/pages/ContactPage";
 import "./styles.css";
@@ -28,7 +28,7 @@ const App = () => {
             element={
               <div className="content">
                 <div className="map-page">
-                  <MapPage allEarthquakes={allEarthquakes} />
+                  <EQMapPage allEarthquakes={allEarthquakes} />
                 </div>
                 <div className="data-page">
                   <DataPage onAllEarthquakes={setAllEarthquakes} />
@@ -36,8 +36,21 @@ const App = () => {
               </div>
             }
           />
+
           <Route path="/knowledge" element={<KnowledgePage />} />
-          <Route path="/WeatherMap" element={<WeatherMap />} />
+
+          <Route
+            path="/WeatherMapPage"
+            element={
+              <div className="content">
+                <div className="map-page">
+                  <WXMapPage />
+                </div>
+                <div className="data-page"></div>
+              </div>
+            }
+          />
+
           <Route path="/Contact" element={<ContactPage />} />
         </Routes>
       </div>

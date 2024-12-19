@@ -75,8 +75,15 @@ earthquake_website/
 `npm run build`：打包成成靜態檔案。  
 `npm run deploy`：部署到 GitHub Pages。
 
-- Wave GIF：[網站](https://imgur.com/a/O7Jq0Hy)
-  - [S wave](https://i.imgur.com/05kws0p.gif)
-  - [P wave](https://i.imgur.com/CBkQxk2.gif)
-  - [Love wave](https://i.imgur.com/b1QsFzV.gif)
-  - [Rayleigh wave](https://i.imgur.com/vHhYN2J.gif)
+- 地震
+
+  - Wave GIF：[網站](https://imgur.com/a/O7Jq0Hy)
+    - [S wave](https://i.imgur.com/05kws0p.gif)
+    - [P wave](https://i.imgur.com/CBkQxk2.gif)
+    - [Love wave](https://i.imgur.com/b1QsFzV.gif)
+    - [Rayleigh wave](https://i.imgur.com/vHhYN2J.gif)
+
+- 天氣
+  - 台灣縣市邊界座標 GeoJSON：[網站](https://github.com/ronnywang/twgeojson)
+    - `twcounty2010.json`：縣市界圖(原始精度)，共 22 縣市
+    - 透過 QGIS 細修與 Leaflet.js 的誤差。
