@@ -9,10 +9,13 @@ const Header = () => {
       </Link>
       <nav className="header-nav">
         <Link to="/" className="header-link">
-          首頁
+          地震資訊
         </Link>
         <Link to="/knowledge" className="header-link">
           地震小知識
+        </Link>
+        <Link to="/WeatherMap" className="header-link">
+          天氣資訊
         </Link>
         <Link to="/Contact" className="header-link">
           聯絡我們
