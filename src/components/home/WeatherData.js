@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import isEqual from "lodash/isEqual";
 
-// 資料顯示元件 (純粹顯示天氣資料，不處理動畫)
-const WeatherDataDisplay = React.memo(({ weatherData }) => {
+const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
+  // 預定顯示的地點排序
   const orderedLocations = [
     "基隆市",
     "臺北市",
@@ -28,35 +28,83 @@ const WeatherDataDisplay = React.memo(({ weatherData }) => {
     "連江縣",
   ];
 
+  const elementNameMap = {
+    Wx: "天氣現象",
+    PoP: "降雨機率",
+    MinT: "最低溫",
+    CI: "體感狀況",
+    MaxT: "最高溫",
+  };
+
   const sortedWeatherData = orderedLocations
     .map((locationName) =>
       weatherData.find((location) => location.locationName === locationName)
     )
     .filter(Boolean);
 
+  // 取得第一個有 Wx 資料的地點，並取得其最新時段時間
+  // 用於向上傳遞預報時段資訊（只需一次）
+  // 假設第一筆有 Wx 的資料即可代表此次預報時段
+  useEffect(() => {
+    if (sortedWeatherData.length > 0) {
+      for (let location of sortedWeatherData) {
+        const wxElement = location.weatherElement.find(
+          (el) => el.elementName === "Wx"
+        );
+        if (wxElement && wxElement.time.length > 0) {
+          const latestWxTimeData = wxElement.time[0];
+          // 將預報時段向上傳給 onForecastTime callback
+          onForecastTime({
+            startTime: latestWxTimeData.startTime,
+            endTime: latestWxTimeData.endTime,
+          });
+          break;
+        }
+      }
+    }
+  }, [sortedWeatherData, onForecastTime]);
+
   return (
     <div className="data-container">
       {sortedWeatherData.map((location, index) => {
         const { locationName, weatherElement } = location;
+        const wxElement = weatherElement.find((el) => el.elementName === "Wx");
+        if (!wxElement || wxElement.time.length === 0) {
+          return null;
+        }
+
+        const latestWxTimeData = wxElement.time[0];
+
         return (
           <div key={index} className="location">
             <h2>{locationName}</h2>
-            {weatherElement.map((element, idx) => (
-              <div key={idx} className="weather-element">
-                <h3>{element.elementName}</h3>
-                {element.time.slice(0, 1).map((timeData, timeIdx) => (
-                  <div key={timeIdx} className="time-period">
-                    <p>
-                      預報範圍：{timeData.startTime} ~ {timeData.endTime}
-                    </p>
+            {/* 已不顯示預報時段，因為要向上傳給 WeatherDataPage 顯示 */}
+
+            {/* Wx */}
+            <h3>{elementNameMap["Wx"] || "Wx"}</h3>
+            <p>
+              值：{latestWxTimeData.parameter.parameterName}{" "}
+              {latestWxTimeData.parameter.parameterUnit || ""}
+            </p>
+
+            {/* 其他要素 */}
+            {weatherElement
+              .filter((el) => el.elementName !== "Wx")
+              .map((element, idx2) => {
+                const timeData = element.time[0];
+                const displayName =
+                  elementNameMap[element.elementName] || element.elementName;
+                return (
+                  <div key={idx2} className="weather-element">
+                    <h3>{displayName}</h3>
                     <p>
                       值：{timeData.parameter.parameterName}{" "}
                       {timeData.parameter.parameterUnit || ""}
                     </p>
                   </div>
-                ))}
-              </div>
-            ))}
+                );
+              })}
+            <hr />
           </div>
         );
       })}
@@ -64,18 +112,22 @@ const WeatherDataDisplay = React.memo(({ weatherData }) => {
   );
 });
 
-// 資料取得元件 (專注於資料抓取與更新)
-const WeatherData = () => {
+const WeatherData = ({ onForecastTime }) => {
   const [weatherData, setWeatherData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchWeatherData = useCallback(async () => {
-    const apiUrl =
-      "https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWA-7E452C07-0B0D-41CF-9963-3BF25839B4A9&format=JSON";
+  const baseUrl =
+    "https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001";
 
+  const params = new URLSearchParams({
+    Authorization: "CWA-7E452C07-0B0D-41CF-9963-3BF25839B4A9",
+    format: "JSON",
+  });
+
+  const fetchWeatherData = useCallback(async () => {
     try {
-      const response = await fetch(apiUrl);
+      const response = await fetch(`${baseUrl}?${params.toString()}`);
       if (!response.ok) {
         throw new Error(`請求失敗 HTTP 狀態碼：${response.status}`);
       }
@@ -97,10 +149,8 @@ const WeatherData = () => {
   }, [weatherData]);
 
   useEffect(() => {
-    // 首次加載數據
     fetchWeatherData();
 
-    // 設置定時器，每天中午12點和晚上12點抓取資料
     const now = new Date();
     const nextNoon = new Date(
       now.getFullYear(),
@@ -124,12 +174,12 @@ const WeatherData = () => {
 
     const noonTimeout = setTimeout(() => {
       fetchWeatherData();
-      setInterval(fetchWeatherData, 24 * 60 * 60 * 1000); // 每24小時中午12點
+      setInterval(fetchWeatherData, 24 * 60 * 60 * 1000);
     }, timeToNextNoon);
 
     const midnightTimeout = setTimeout(() => {
       fetchWeatherData();
-      setInterval(fetchWeatherData, 24 * 60 * 60 * 1000); // 每24小時晚上12點
+      setInterval(fetchWeatherData, 24 * 60 * 60 * 1000);
     }, timeToNextMidnight);
 
     return () => {
@@ -146,8 +196,12 @@ const WeatherData = () => {
     return <div>發生錯誤：{error.message}</div>;
   }
 
-  // 將資料顯示與元件內部分離
-  return <WeatherDataDisplay weatherData={weatherData} />;
+  return (
+    <WeatherDataDisplay
+      weatherData={weatherData}
+      onForecastTime={onForecastTime}
+    />
+  );
 };
 
 export default WeatherData;
