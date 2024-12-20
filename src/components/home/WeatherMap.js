@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 const WeatherMap = () => {
@@ -7,6 +7,7 @@ const WeatherMap = () => {
     window.innerWidth < 768 ? 7 : 8.6
   );
   const [geojsonData, setGeojsonData] = useState(null);
+  const [cityCenters, setCityCenters] = useState(null);
 
   useEffect(() => {
     // 設定視窗大小改變時的縮放層級調整
@@ -35,7 +36,24 @@ const WeatherMap = () => {
       }
     };
 
+    // 載入城市中心座標
+    const fetchCityCenters = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.PUBLIC_URL}/data/city_center.json`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch city center data");
+        }
+        const data = await response.json();
+        setCityCenters(data);
+      } catch (error) {
+        console.error("Error loading city center data:", error);
+      }
+    };
+
     fetchGeojsonData();
+    fetchCityCenters();
   }, []);
 
   const defaultCenter = [23.6978, 120.9605];
@@ -55,6 +73,18 @@ const WeatherMap = () => {
         />
 
         {geojsonData && <GeoJSON data={geojsonData} />}
+
+        {/* 畫出每個縣市中心點的圈 */}
+        {cityCenters &&
+          Object.entries(cityCenters).map(([city, coords]) => (
+            <Circle
+              key={city}
+              center={[coords[1], coords[0]]} // Leaflet 的座標格式是 [緯度, 經度]
+              radius={1000} // 圈的半徑，單位為公尺
+              color="red"
+              fillOpacity={0.3}
+            />
+          ))}
       </MapContainer>
     </div>
   );

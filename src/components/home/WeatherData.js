@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import isEqual from "lodash/isEqual";
 
 const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
-  // 預定顯示的地點排序
   const orderedLocations = [
     "基隆市",
     "臺北市",
@@ -34,7 +33,6 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
     )
     .filter(Boolean);
 
-  // 向上傳遞預報時段
   useEffect(() => {
     if (sortedWeatherData.length > 0) {
       for (let location of sortedWeatherData) {
@@ -80,14 +78,12 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
         const pop = popElement?.time[0]?.parameter?.parameterName;
         const wxValue = wxData.parameterValue;
 
-        // 將 wxValue 對應到圖示檔路徑
-        const iconSrc = `${process.env.PUBLIC_URL}/icons/${wxValue}.svg`; // 假設 public/icons 下有相符的圖檔
+        const iconSrc = `${process.env.PUBLIC_URL}/icons/${wxValue}.svg`;
 
         return (
           <div key={index} className="location">
             <h2>{locationName}</h2>
 
-            {/* 使用 img 顯示對應 wxValue 的圖示 */}
             <img src={iconSrc} alt={wxData.parameterName} />
 
             <p>天氣現象 ：{wxData.parameterName}</p>
@@ -142,42 +138,11 @@ const WeatherData = ({ onForecastTime }) => {
 
   useEffect(() => {
     fetchWeatherData();
-
-    const now = new Date();
-    const nextNoon = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-      12,
-      0,
-      0
-    );
-    const nextMidnight = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate() + 1,
-      0,
-      0,
-      0
-    );
-
-    const timeToNextNoon = nextNoon.getTime() - now.getTime();
-    const timeToNextMidnight = nextMidnight.getTime() - now.getTime();
-
-    const noonTimeout = setTimeout(() => {
+    const interval = setInterval(() => {
       fetchWeatherData();
-      setInterval(fetchWeatherData, 24 * 60 * 60 * 1000);
-    }, timeToNextNoon);
+    }, 3600000); // 每1小時更新一次
 
-    const midnightTimeout = setTimeout(() => {
-      fetchWeatherData();
-      setInterval(fetchWeatherData, 24 * 60 * 60 * 1000);
-    }, timeToNextMidnight);
-
-    return () => {
-      clearTimeout(noonTimeout);
-      clearTimeout(midnightTimeout);
-    };
+    return () => clearInterval(interval);
   }, [fetchWeatherData]);
 
   if (loading) {
