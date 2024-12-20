@@ -41,7 +41,7 @@ const App = () => {
           <Route path="/knowledge" element={<KnowledgePage />} />
 
           <Route
-            path="/WeatherMapPage"
+            path="/Weather"
             element={
               <div className="content">
                 <div className="map-page">
