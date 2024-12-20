@@ -5,8 +5,6 @@ const WeatherDataPage = ({ onAllEarthquakes }) => {
   const [forecastTime, setForecastTime] = useState(null);
 
   const handleForecastTime = (timeInfo) => {
-    // timeInfo = { startTime: "2024-12-20 12:00:00", endTime: "2024-12-20 18:00:00" }
-    // 若已存在則不重複更新(只顯示一次)
     if (!forecastTime) {
       setForecastTime(timeInfo);
     }
@@ -14,8 +12,7 @@ const WeatherDataPage = ({ onAllEarthquakes }) => {
 
   return (
     <div className="noto-sans-sc">
-      <h2 className="data-heading">即時天氣資訊</h2>
-      {/* 顯示預報時段（只顯示一次） */}
+      <h2 className="data-heading">天氣預報資訊</h2>
       {forecastTime && (
         <div>
           <p>
@@ -24,7 +21,6 @@ const WeatherDataPage = ({ onAllEarthquakes }) => {
         </div>
       )}
       <div>
-        {/* 將 handleForecastTime 傳入，讓 WeatherData 能把預報時段傳上來 */}
         <WeatherData
           onAllEarthquakes={onAllEarthquakes}
           onForecastTime={handleForecastTime}

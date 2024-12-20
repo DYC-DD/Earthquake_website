@@ -28,23 +28,13 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
     "連江縣",
   ];
 
-  const elementNameMap = {
-    Wx: "天氣現象",
-    PoP: "降雨機率",
-    MinT: "最低溫",
-    CI: "體感狀況",
-    MaxT: "最高溫",
-  };
-
   const sortedWeatherData = orderedLocations
     .map((locationName) =>
       weatherData.find((location) => location.locationName === locationName)
     )
     .filter(Boolean);
 
-  // 取得第一個有 Wx 資料的地點，並取得其最新時段時間
-  // 用於向上傳遞預報時段資訊（只需一次）
-  // 假設第一筆有 Wx 的資料即可代表此次預報時段
+  // 向上傳遞預報時段
   useEffect(() => {
     if (sortedWeatherData.length > 0) {
       for (let location of sortedWeatherData) {
@@ -53,7 +43,6 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
         );
         if (wxElement && wxElement.time.length > 0) {
           const latestWxTimeData = wxElement.time[0];
-          // 將預報時段向上傳給 onForecastTime callback
           onForecastTime({
             startTime: latestWxTimeData.startTime,
             endTime: latestWxTimeData.endTime,
@@ -69,41 +58,44 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
       {sortedWeatherData.map((location, index) => {
         const { locationName, weatherElement } = location;
         const wxElement = weatherElement.find((el) => el.elementName === "Wx");
+        const minTempElement = weatherElement.find(
+          (el) => el.elementName === "MinT"
+        );
+        const maxTempElement = weatherElement.find(
+          (el) => el.elementName === "MaxT"
+        );
+        const ciElement = weatherElement.find((el) => el.elementName === "CI");
+        const popElement = weatherElement.find(
+          (el) => el.elementName === "PoP"
+        );
+
         if (!wxElement || wxElement.time.length === 0) {
           return null;
         }
 
-        const latestWxTimeData = wxElement.time[0];
+        const wxData = wxElement.time[0].parameter;
+        const minTemp = minTempElement?.time[0]?.parameter?.parameterName;
+        const maxTemp = maxTempElement?.time[0]?.parameter?.parameterName;
+        const ci = ciElement?.time[0]?.parameter?.parameterName;
+        const pop = popElement?.time[0]?.parameter?.parameterName;
+        const wxValue = wxData.parameterValue;
+
+        // 將 wxValue 對應到圖示檔路徑
+        const iconSrc = `${process.env.PUBLIC_URL}/icons/${wxValue}.svg`; // 假設 public/icons 下有相符的圖檔
 
         return (
           <div key={index} className="location">
             <h2>{locationName}</h2>
-            {/* 已不顯示預報時段，因為要向上傳給 WeatherDataPage 顯示 */}
 
-            {/* Wx */}
-            <h3>{elementNameMap["Wx"] || "Wx"}</h3>
+            {/* 使用 img 顯示對應 wxValue 的圖示 */}
+            <img src={iconSrc} alt={wxData.parameterName} />
+
+            <p>天氣現象 ：{wxData.parameterName}</p>
+            <p>降雨機率 ：{pop} %</p>
+            <p>體感狀況 ：{ci}</p>
             <p>
-              值：{latestWxTimeData.parameter.parameterName}{" "}
-              {latestWxTimeData.parameter.parameterUnit || ""}
+              氣溫範圍 ：{minTemp} ℃ ~ {maxTemp} ℃
             </p>
-
-            {/* 其他要素 */}
-            {weatherElement
-              .filter((el) => el.elementName !== "Wx")
-              .map((element, idx2) => {
-                const timeData = element.time[0];
-                const displayName =
-                  elementNameMap[element.elementName] || element.elementName;
-                return (
-                  <div key={idx2} className="weather-element">
-                    <h3>{displayName}</h3>
-                    <p>
-                      值：{timeData.parameter.parameterName}{" "}
-                      {timeData.parameter.parameterUnit || ""}
-                    </p>
-                  </div>
-                );
-              })}
             <hr />
           </div>
         );
