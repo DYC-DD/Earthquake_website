@@ -1,31 +1,55 @@
+### Version
+
+1.0.0：地震資訊 (迭代都忘了更新)  
+2.0.0：天氣資訊
+
+---
+
 ### 專案架構目錄樹狀圖
 
 ```
 earthquake_website/
-├── docs/                      # 存放專案的相關文檔
+├── build/                             # 打包成靜態網站
+├── docs/                              # 存放專案的相關開發文檔
 │
 ├── public/
-│   ├── earthquake_data.json   # 儲存從 API 獲取的地震資料
-│   └── index.html             # React 應用的入口 HTML
+│   ├── data/                          # json資料檔
+│   ├── icons/                         # 天氣圖標
+│   ├── images/                        # 圖片
+│   └── index.html                     # React 應用的入口 HTML
 │
 ├── src/
-│   ├── components/            # 各種 React 元件
-│   │   ├── EarthquakeList.js  # 顯示地震資訊列表的元件
-│   │   ├── EarthquakeMap.js   # 顯示地震地圖的元件（使用 Leaflet.js）
-│   │   ├── Footer.js          # 網站首尾組件
-│   │   └── Header.js          # 網站標題與導航列
+│   ├── components/                     # 各種 React 元件
+│   │   ├── home/
+│   │   │   ├── EarthquakeData.js       # 地震資訊
+│   │   │   ├── EarthquakeDataPage.js   # 地震資訊頁面
+│   │   │   ├── EarthquakeMap.js        # 地震地圖
+│   │   │   ├── EarthquakeMapPage.js    # 地震地圖頁面
+│   │   │   ├── WeatherData.js          # 天氣資訊
+│   │   │   ├── WeatherDataPage.js      # 天氣資訊頁面
+│   │   │   ├── WeatherMap.js           # 天氣地圖
+│   │   │   └── WeatherMapPage.js       # 天氣地圖頁面
+│   │   │
+│   │   ├── layout/
+│   │   │   ├── Footer.js               # 網站首尾組件
+│   │   │   └── Header.js               # 網站標題與導航列
+│   │   │
+│   │   └── pages/
+│   │       ├── ContactPage.js          # 連絡我頁面
+│   │       └── KnowledgePage.js        # 地震小知識頁面
 │   │
-│   ├── App.js                 # 主應用邏輯，組合各個元件
-│   ├── index.js               # React 應用的入口
-│   └── styles.css             # 自定義樣式
+│   ├── App.js                          # 主應用邏輯，組合各個元件
+│   ├── index.js                        # React 應用的入口
+│   └── styles.css                      # 自定義樣式
 │
-├── .github/
-│   └── workflows/
-│       └── deploy.yml         # GitHub Actions CI/CD 配置文件
+├── tests/
+│   ├── plot_config/                    # 繪畫地震波型 GIF
+│   ├── test_api/                       # 測試 API
+│   └── test_map/                       # 測試地圖
 │
-├── package.json               # 項目依賴與指令配置
-├── package-lock.json          # 依賴鎖定文件
-└── README.md                  # 專案描述與使用說明
+├── package.json                        # 項目依賴與指令配置
+├── package-lock.json                   # 依賴鎖定文件
+└── README.md                           # 專案描述與使用說明
 ```
 
 ---
