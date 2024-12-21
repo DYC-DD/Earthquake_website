@@ -133,7 +133,7 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
   );
 });
 
-const WeatherData = ({ onForecastTime }) => {
+const WeatherData = ({ onForecastTime, onWeatherDataByCity }) => {
   const [weatherData, setWeatherData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -159,6 +159,21 @@ const WeatherData = ({ onForecastTime }) => {
       if (!isEqual(locations, weatherData)) {
         setWeatherData(locations);
       }
+
+      const weatherByCity = locations.map((location) => {
+        const locationName = location.locationName;
+        const wxElement = location.weatherElement.find(
+          (el) => el.elementName === "Wx"
+        );
+        const currentWxData = wxElement?.time[0]?.parameter;
+
+        return {
+          city: locationName,
+          wxValue: currentWxData?.parameterValue, // 天氣編號
+          wxName: currentWxData?.parameterName, // 天氣名稱
+        };
+      });
+      onWeatherDataByCity?.(weatherByCity);
 
       setError(null);
     } catch (error) {
