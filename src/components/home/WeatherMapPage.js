@@ -13,6 +13,7 @@ const WeatherDataPage = ({ onAllEarthquakes }) => {
   return (
     <div className="noto-sans-sc">
       <h2 className="data-heading">天氣預報資訊</h2>
+      <WeatherMap weatherDataByCity={weatherDataByCity} />
       {!weatherDataByCity.length && (
         <div>
           <WeatherData
@@ -22,7 +23,6 @@ const WeatherDataPage = ({ onAllEarthquakes }) => {
           />
         </div>
       )}
-      <WeatherMap weatherDataByCity={weatherDataByCity} />
     </div>
   );
 };

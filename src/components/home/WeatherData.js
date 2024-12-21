@@ -81,7 +81,7 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
   }, [sortedWeatherData, onForecastTime]);
 
   return (
-    <div className="data-container">
+    <div className="data-container2">
       {sortedWeatherData.map((location, index) => {
         const { locationName, weatherElement } = location;
         const wxElement = weatherElement.find((el) => el.elementName === "Wx");
@@ -114,7 +114,7 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
         const iconSrc = `${process.env.PUBLIC_URL}/icons/${wxValue}.svg`;
 
         return (
-          <div key={index} className="location">
+          <div key={index}>
             <h2>{locationName}</h2>
 
             <img src={iconSrc} alt={currentWxData?.parameterName} />

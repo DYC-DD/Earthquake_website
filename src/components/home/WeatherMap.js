@@ -83,7 +83,18 @@ const WeatherMap = ({ weatherDataByCity }) => {
           attribution="&copy; OpenStreetMap contributors"
         />
 
-        {geojsonData && <GeoJSON data={geojsonData} />}
+        {geojsonData && (
+          <GeoJSON
+            data={geojsonData}
+            style={(feature) => ({
+              color: "#3388ff", // 線條顏色
+              weight: 2, // 線條寬度
+              opacity: 0.6, // 線條透明度
+              fillColor: "#66ccff", // 填充顏色（如果有多邊形）
+              fillOpacity: 0.2, // 填充透明度
+            })}
+          />
+        )}
 
         {cityCenters &&
           Object.entries(cityCenters).map(([city, coords]) => {

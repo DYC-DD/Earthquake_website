@@ -413,107 +413,6 @@ h3 {
   margin-bottom: 4px;
 }
 
-/* ========== 其他設備樣式 ========== */
-@media (max-width: 768px) {
-  .App {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  .content {
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin: 10px auto;
-  }
-
-  .data-container p {
-    word-wrap: break-word;
-    line-height: 1.5;
-  }
-
-  .map-page {
-    width: 98%;
-    height: auto;
-    padding: 4px;
-  }
-
-  .map-container {
-    width: 50vh;
-    height: 50vh;
-  }
-
-  .data-page {
-    width: 98%;
-    height: 650px;
-  }
-
-  .data-container {
-    width: 98%;
-    height: 550px;
-  }
-
-  .footer {
-    bottom: 0;
-    width: 100%;
-    z-index: 10;
-    background: #161616;
-  }
-
-  .wave-container {
-    display: flex;
-    flex-direction: column;
-    width: 98%;
-    margin: 0 auto 10px auto;
-    gap: 10px;
-  }
-
-  .wave-item {
-    height: auto;
-    padding: 15px;
-  }
-
-  .wave-item img {
-    width: 100%;
-    max-width: 300px;
-    margin-top: 10px;
-    margin-bottom: 0;
-  }
-
-  .knowledge-container {
-    width: 98%;
-    margin-bottom: 10px;
-    padding: 8px;
-    padding-inline: 20px;
-  }
-
-  .knowledge-container2 {
-    width: 98%;
-    margin-bottom: 10px;
-    padding: 8px;
-    padding-inline: 20px;
-  }
-
-  .wave-container2 {
-    display: flex;
-    flex-direction: column;
-    width: 98%;
-    margin: 0 auto;
-    gap: 10px;
-  }
-
-  .knowledge-container2 ul,
-  .wave-item-left ul {
-    /* text-align: center; */
-    padding-left: 30px;
-  }
-
-  .wave-item-right {
-    gap: 10px;
-  }
-}
-
 /* ========== 聯絡我們 ========== */
 /* 專屬 ContactPage 的樣式 */
 .contact-page {
@@ -636,4 +535,125 @@ h3 {
 .hover-shadow.active {
   opacity: 1;
   transform: scale(1.5);
+}
+
+/* ========== 天氣 Map ========== */
+
+/* ========== 天氣 Data ========== */
+.data-container2 {
+  width: 500px;
+  height: 1030px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+/* ========== 其他設備樣式 ========== */
+@media (max-width: 768px) {
+  .App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .content {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 10px auto;
+  }
+
+  .data-container p {
+    word-wrap: break-word;
+    line-height: 1.5;
+  }
+
+  .map-page {
+    width: 98%;
+    height: auto;
+    padding: 4px;
+  }
+
+  .map-container {
+    width: 50vh;
+    height: 50vh;
+  }
+
+  .data-page {
+    width: 98%;
+    height: 650px;
+  }
+
+  .data-container {
+    width: 98%;
+    height: 550px;
+  }
+
+  .footer {
+    bottom: 0;
+    width: 100%;
+    z-index: 10;
+    background: #161616;
+  }
+
+  .wave-container {
+    display: flex;
+    flex-direction: column;
+    width: 98%;
+    margin: 0 auto 10px auto;
+    gap: 10px;
+  }
+
+  .wave-item {
+    height: auto;
+    padding: 15px;
+  }
+
+  .wave-item img {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+
+  .knowledge-container {
+    width: 98%;
+    margin-bottom: 10px;
+    padding: 8px;
+    padding-inline: 20px;
+  }
+
+  .knowledge-container2 {
+    width: 98%;
+    margin-bottom: 10px;
+    padding: 8px;
+    padding-inline: 20px;
+  }
+
+  .wave-container2 {
+    display: flex;
+    flex-direction: column;
+    width: 98%;
+    margin: 0 auto;
+    gap: 10px;
+  }
+
+  .knowledge-container2 ul,
+  .wave-item-left ul {
+    /* text-align: center; */
+    padding-left: 30px;
+  }
+
+  .wave-item-right {
+    gap: 10px;
+  }
+
+  .data-container2 p {
+    word-wrap: break-word;
+    line-height: 1.5;
+  }
+
+  .data-container2 {
+    width: 98%;
+    height: 510px;
+  }
 }
