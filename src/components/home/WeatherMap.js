@@ -45,6 +45,7 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
   };
 
   useEffect(() => {
+    // 設定初始縮放層級
     const updateZoomLevel = () => {
       const isMobileView = window.innerWidth < 768;
       setZoomLevel(isMobileView ? 7.4 : 8.6);
@@ -57,6 +58,7 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
   }, []);
 
   useEffect(() => {
+    // 取得台灣行政區域的 GeoJSON
     const fetchGeojsonData = async () => {
       try {
         const response = await fetch(
@@ -70,6 +72,7 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
       }
     };
 
+    // 取得各縣市的中心點座標
     const fetchCityCenters = async () => {
       try {
         const response = await fetch(
@@ -88,6 +91,7 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
   }, []);
 
   useEffect(() => {
+    // 在切換 selectedCity 時，先短暫回到 "Taiwan" 以產生轉場效果，再切換到目標城市
     if (selectedCity === transitionCity) return;
 
     setTransitionCity("Taiwan");
@@ -97,6 +101,10 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
     return () => clearTimeout(timeout);
   }, [selectedCity]);
 
+  /**
+   * 根據天氣狀況 wxValue 產生對應的 Icon
+   * @param {string} wxValue - 天氣代碼，例如晴、多雲、陰雨...
+   */
   const createIcon = (wxValue) => {
     const iconUrl = `${process.env.PUBLIC_URL}/icons/${wxValue}.svg`;
     return L.icon({
@@ -106,6 +114,11 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
     });
   };
 
+  /**
+   * 動態更新地圖視角的子元件
+   * @param {string} city - 要切換的城市名稱
+   * @returns {null} - 不回傳任何 UI，僅執行 side effect
+   */
   const UpdateMapView = ({ city }) => {
     const map = useMap();
     useEffect(() => {
@@ -114,8 +127,10 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
         ? cityZoomLevels[city]?.mobile || zoomLevel
         : cityZoomLevels[city]?.desktop || zoomLevel;
       if (city === "Taiwan") {
+        // 顯示整個台灣
         map.setView(defaultCenter, zoom);
       } else if (city && cityCenters && cityCenters[city]) {
+        // 顯示目標縣市
         const [lng, lat] = cityCenters[city];
         map.setView([lat, lng], zoom);
       }
@@ -141,19 +156,51 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
           attribution="&copy; OpenStreetMap contributors"
         />
 
+        {/**
+         * 這裡的 style 屬性可以根據 feature.properties 來套用不同的樣式
+         * 假設 GeoJSON 每個多邊形都有一個屬性 feature.properties.COUNTYNAME
+         * 和我們的 transitionCity(或 selectedCity) 做比對。
+         */}
         {geojsonData && (
           <GeoJSON
             data={geojsonData}
-            style={(feature) => ({
-              color: "#3388ff",
-              weight: 2,
-              opacity: 0.6,
-              fillColor: "#66ccff",
-              fillOpacity: 0.2,
-            })}
+            /**
+             * 依照是否為選取城市，改變顏色：
+             * - 如果 transitionCity === "Taiwan"，代表尚未切換到個別城市，維持原本顏色。
+             * - 如果 feature.properties.COUNTYNAME === transitionCity，保持原本亮色。
+             * - 其他縣市使用深色覆蓋。
+             */
+            style={(feature) => {
+              // 取得該區域的縣市名稱
+              const cityName = feature.properties.county;
+
+              // 如果目前是顯示整個台灣，使用一般樣式
+              if (transitionCity === "Taiwan") {
+                return {
+                  color: "#3388ff",
+                  weight: 2,
+                  opacity: 0.6,
+                  fillColor: "#66ccff",
+                  fillOpacity: 0.2,
+                };
+              } else {
+                // 如果是選到的縣市就顯示亮色，否則覆蓋深色
+                const isSelected = cityName === transitionCity;
+                return {
+                  color: isSelected ? "#3388ff" : "#4f4f4f", // 外框顏色
+                  weight: 2, // 外框粗細
+                  opacity: isSelected ? 0.6 : 0.9, // 外框透明度
+                  fillColor: isSelected ? "#66ccff" : "#2c3e50", // 內部填色
+                  fillOpacity: isSelected ? 0.2 : 0.7, // 內部透明度
+                };
+              }
+            }}
           />
         )}
 
+        {/**
+         * 在地圖上放上各個城市的天氣圖示
+         */}
         {cityCenters &&
           Object.entries(cityCenters).map(([city, coords]) => {
             const cityWeather = weatherDataByCity.find(
@@ -170,6 +217,7 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
             );
           })}
 
+        {/* 動態更新地圖視野到選取的城市 */}
         <UpdateMapView city={transitionCity} />
       </MapContainer>
     </div>
