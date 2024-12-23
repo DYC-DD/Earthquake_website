@@ -121,10 +121,10 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
 
             <p>天氣現象 ：{currentWxData?.parameterName}</p>
             <p>降雨機率 ：{pop} %</p>
-            <p>體感狀況 ：{ci}</p>
             <p>
               氣溫範圍 ：{minTemp} ℃ ~ {maxTemp} ℃
             </p>
+            <p>體感狀況 ：{ci}</p>
             <hr />
           </div>
         );

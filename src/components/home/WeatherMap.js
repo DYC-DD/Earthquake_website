@@ -1,35 +1,68 @@
 import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, GeoJSON, Marker } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  GeoJSON,
+  Marker,
+  useMap,
+} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-const WeatherMap = ({ weatherDataByCity }) => {
-  const [zoomLevel, setZoomLevel] = useState(() =>
-    window.innerWidth < 768 ? 7 : 8.6
-  );
+const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
+  const [zoomLevel, setZoomLevel] = useState(null);
   const [geojsonData, setGeojsonData] = useState(null);
   const [cityCenters, setCityCenters] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [transitionCity, setTransitionCity] = useState("Taiwan");
+  const defaultCenter = [23.6978, 120.9605];
+
+  // 修改 cityZoomLevels，為每個縣市定義桌面和手機的縮放級別
+  const cityZoomLevels = {
+    Taiwan: { desktop: 8.6, mobile: 7.4 },
+    基隆市: { desktop: 12, mobile: 10 },
+    臺北市: { desktop: 12, mobile: 10 },
+    新北市: { desktop: 12, mobile: 10 },
+    桃園市: { desktop: 12, mobile: 10 },
+    新竹縣: { desktop: 12, mobile: 10 },
+    新竹市: { desktop: 12, mobile: 10 },
+    苗栗縣: { desktop: 12, mobile: 10 },
+    臺中市: { desktop: 12, mobile: 10 },
+    彰化縣: { desktop: 12, mobile: 10 },
+    南投縣: { desktop: 12, mobile: 10 },
+    雲林縣: { desktop: 12, mobile: 10 },
+    嘉義縣: { desktop: 12, mobile: 10 },
+    嘉義市: { desktop: 12, mobile: 10 },
+    臺南市: { desktop: 12, mobile: 10 },
+    高雄市: { desktop: 12, mobile: 10 },
+    屏東縣: { desktop: 12, mobile: 10 },
+    宜蘭縣: { desktop: 12, mobile: 10 },
+    花蓮縣: { desktop: 12, mobile: 10 },
+    臺東縣: { desktop: 12, mobile: 10 },
+    澎湖縣: { desktop: 12, mobile: 10 },
+    金門縣: { desktop: 12, mobile: 10 },
+    連江縣: { desktop: 12, mobile: 10 },
+  };
 
   useEffect(() => {
-    // 調整地圖縮放層級
     const updateZoomLevel = () => {
-      setZoomLevel(window.innerWidth < 768 ? 7 : 8.6);
+      const isMobileView = window.innerWidth < 768;
+      setZoomLevel(isMobileView ? 7.4 : 8.6);
+      setIsMobile(isMobileView);
     };
 
+    updateZoomLevel();
     window.addEventListener("resize", updateZoomLevel);
     return () => window.removeEventListener("resize", updateZoomLevel);
   }, []);
 
   useEffect(() => {
-    // 載入 GeoJSON 資料
     const fetchGeojsonData = async () => {
       try {
         const response = await fetch(
           `${process.env.PUBLIC_URL}/data/Taiwan.json`
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch GeoJSON data");
-        }
+        if (!response.ok) throw new Error("Failed to fetch GeoJSON data");
         const data = await response.json();
         setGeojsonData(data);
       } catch (error) {
@@ -37,15 +70,12 @@ const WeatherMap = ({ weatherDataByCity }) => {
       }
     };
 
-    // 載入縣市中心座標
     const fetchCityCenters = async () => {
       try {
         const response = await fetch(
           `${process.env.PUBLIC_URL}/data/city_center.json`
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch city center data");
-        }
+        if (!response.ok) throw new Error("Failed to fetch city center data");
         const data = await response.json();
         setCityCenters(data);
       } catch (error) {
@@ -57,24 +87,52 @@ const WeatherMap = ({ weatherDataByCity }) => {
     fetchCityCenters();
   }, []);
 
-  // 創建 Leaflet 圖示
+  useEffect(() => {
+    if (selectedCity === transitionCity) return;
+
+    setTransitionCity("Taiwan");
+    const timeout = setTimeout(() => {
+      setTransitionCity(selectedCity);
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [selectedCity]);
+
   const createIcon = (wxValue) => {
     const iconUrl = `${process.env.PUBLIC_URL}/icons/${wxValue}.svg`;
     return L.icon({
-      iconUrl, // 天氣圖示 URL
-      iconSize: [50, 50], // 圖示大小
-      iconAnchor: [25, 25], // 圖示錨點
+      iconUrl,
+      iconSize: isMobile ? [30, 30] : [50, 50],
+      iconAnchor: isMobile ? [15, 15] : [25, 25],
     });
   };
 
-  const defaultCenter = [23.6978, 120.9605];
+  const UpdateMapView = ({ city }) => {
+    const map = useMap();
+    useEffect(() => {
+      // 選擇適當的縮放級別
+      const zoom = isMobile
+        ? cityZoomLevels[city]?.mobile || zoomLevel
+        : cityZoomLevels[city]?.desktop || zoomLevel;
+      if (city === "Taiwan") {
+        map.setView(defaultCenter, zoom);
+      } else if (city && cityCenters && cityCenters[city]) {
+        const [lng, lat] = cityCenters[city];
+        map.setView([lat, lng], zoom);
+      }
+    }, [city, cityCenters, map, isMobile, zoomLevel]);
+    return null;
+  };
+
+  if (zoomLevel === null) {
+    return <div>Loading map...</div>;
+  }
 
   return (
     <div className="map-container">
       <MapContainer
-        center={defaultCenter} // 地圖中心點
-        zoom={zoomLevel} // 地圖縮放層級
-        zoomSnap={0.2} // 縮放靈敏度
+        center={defaultCenter}
+        zoom={zoomLevel}
+        zoomSnap={0.2}
         zoomDelta={0.2}
         style={{ height: "100%", width: "100%" }}
       >
@@ -87,11 +145,11 @@ const WeatherMap = ({ weatherDataByCity }) => {
           <GeoJSON
             data={geojsonData}
             style={(feature) => ({
-              color: "#3388ff", // 線條顏色
-              weight: 2, // 線條寬度
-              opacity: 0.6, // 線條透明度
-              fillColor: "#66ccff", // 填充顏色（如果有多邊形）
-              fillOpacity: 0.2, // 填充透明度
+              color: "#3388ff",
+              weight: 2,
+              opacity: 0.6,
+              fillColor: "#66ccff",
+              fillOpacity: 0.2,
             })}
           />
         )}
@@ -101,7 +159,7 @@ const WeatherMap = ({ weatherDataByCity }) => {
             const cityWeather = weatherDataByCity.find(
               (data) => data.city === city
             );
-            if (!cityWeather) return null; // 如果找不到對應的天氣資料，跳過該城市
+            if (!cityWeather) return null;
 
             return (
               <Marker
@@ -111,6 +169,8 @@ const WeatherMap = ({ weatherDataByCity }) => {
               />
             );
           })}
+
+        <UpdateMapView city={transitionCity} />
       </MapContainer>
     </div>
   );
