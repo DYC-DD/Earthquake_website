@@ -17,6 +17,7 @@ import "./styles.css";
 
 const App = () => {
   const [allEarthquakes, setAllEarthquakes] = useState([]);
+  const [selectedCity, setSelectedCity] = useState("Taiwan");
 
   return (
     <Router>
@@ -45,10 +46,16 @@ const App = () => {
             element={
               <div className="content">
                 <div className="map-page">
-                  <WXMapPage />
+                  <WXMapPage
+                    selectedCity={selectedCity}
+                    setSelectedCity={setSelectedCity}
+                  />
                 </div>
                 <div className="data-page">
-                  <WXDataPage />
+                  <WXDataPage
+                    onAllEarthquakes={setAllEarthquakes}
+                    selectedCity={selectedCity}
+                  />
                 </div>
               </div>
             }
