@@ -97,14 +97,10 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
     setTransitionCity("Taiwan");
     const timeout = setTimeout(() => {
       setTransitionCity(selectedCity);
-    }, 500);
+    }, 400);
     return () => clearTimeout(timeout);
   }, [selectedCity]);
 
-  /**
-   * 根據天氣狀況 wxValue 產生對應的 Icon
-   * @param {string} wxValue - 天氣代碼，例如晴、多雲、陰雨...
-   */
   const createIcon = (wxValue) => {
     const iconUrl = `${process.env.PUBLIC_URL}/icons/${wxValue}.svg`;
     return L.icon({
@@ -114,23 +110,15 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
     });
   };
 
-  /**
-   * 動態更新地圖視角的子元件
-   * @param {string} city - 要切換的城市名稱
-   * @returns {null} - 不回傳任何 UI，僅執行 side effect
-   */
   const UpdateMapView = ({ city }) => {
     const map = useMap();
     useEffect(() => {
-      // 選擇適當的縮放級別
       const zoom = isMobile
         ? cityZoomLevels[city]?.mobile || zoomLevel
         : cityZoomLevels[city]?.desktop || zoomLevel;
       if (city === "Taiwan") {
-        // 顯示整個台灣
         map.setView(defaultCenter, zoom);
       } else if (city && cityCenters && cityCenters[city]) {
-        // 顯示目標縣市
         const [lng, lat] = cityCenters[city];
         map.setView([lat, lng], zoom);
       }
@@ -156,11 +144,6 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
           attribution="&copy; OpenStreetMap contributors"
         />
 
-        {/**
-         * 這裡的 style 屬性可以根據 feature.properties 來套用不同的樣式
-         * 假設 GeoJSON 每個多邊形都有一個屬性 feature.properties.COUNTYNAME
-         * 和我們的 transitionCity(或 selectedCity) 做比對。
-         */}
         {geojsonData && (
           <GeoJSON
             data={geojsonData}
@@ -203,6 +186,9 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
          */}
         {cityCenters &&
           Object.entries(cityCenters).map(([city, coords]) => {
+            // 只在 "Taiwan" 時顯示 SVG 圖示
+            if (selectedCity !== "Taiwan") return null;
+
             const cityWeather = weatherDataByCity.find(
               (data) => data.city === city
             );
