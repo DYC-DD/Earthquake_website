@@ -19,7 +19,7 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
 
   // 修改 cityZoomLevels，為每個縣市定義桌面和手機的縮放級別
   const cityZoomLevels = {
-    Taiwan: { desktop: 8.6, mobile: 7.4 },
+    Taiwan: { desktop: 8.6, mobile: 7 },
     基隆市: { desktop: 12, mobile: 10 },
     臺北市: { desktop: 12, mobile: 10 },
     新北市: { desktop: 12, mobile: 10 },
@@ -48,7 +48,7 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
     // 設定初始縮放層級
     const updateZoomLevel = () => {
       const isMobileView = window.innerWidth < 768;
-      setZoomLevel(isMobileView ? 7.4 : 8.6);
+      setZoomLevel(isMobileView ? 7 : 8.6);
       setIsMobile(isMobileView);
     };
 

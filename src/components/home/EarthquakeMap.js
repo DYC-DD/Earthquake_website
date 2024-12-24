@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 const EarthquakeMap = ({ recentEarthquakes }) => {
   // 根據螢幕寬度動態設置地圖縮放層級
   const [zoomLevel, setZoomLevel] = useState(() =>
-    window.innerWidth < 768 ? 7.4 : 8.6
+    window.innerWidth < 768 ? 7 : 8.6
   );
 
   // 用於記錄 Popup 位置
