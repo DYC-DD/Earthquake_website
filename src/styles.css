@@ -547,6 +547,50 @@ h3 {
   scrollbar-width: none;
 }
 
+.WD-group {
+  border: 1px solid #525252;
+  border-radius: 10px;
+  padding: 0.6rem;
+  padding-bottom: 0rem;
+  margin-bottom: 1rem;
+  background-color: #2b2b2b;
+}
+
+.WD-type {
+  margin-bottom: 6px;
+  /* border: 1px solid #525252; */
+  border-radius: 10px;
+  color: #e2e8f0;
+}
+
+.WD-future-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #333333;
+  white-space: nowrap;
+  padding: 0.5rem;
+  margin-bottom: 10px;
+}
+
+.WD-future-container2 {
+  display: inline-block;
+  min-width: 160px;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border: 1px solid #888;
+  border-radius: 10px;
+  background-color: #333333;
+  white-space: pre-wrap;
+  text-align: center;
+  color: #e2e8f0;
+}
+
+.WD-future-container2 p {
+  margin: 0;
+}
+
 /* ========== 其他設備樣式 ========== */
 @media (max-width: 768px) {
   .App {
@@ -654,6 +698,19 @@ h3 {
 
   .data-container2 {
     width: 98%;
-    height: 500px;
+    height: 550px;
+  }
+
+  .WD-group {
+  }
+
+  .WD-type {
+  }
+
+  .WD-future-container {
+    width: 50vh;
+  }
+
+  .WD-future-container2 {
   }
 }

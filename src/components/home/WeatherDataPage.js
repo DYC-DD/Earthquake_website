@@ -11,9 +11,11 @@ const WeatherDataPage = ({ onAllEarthquakes, selectedCity }) => {
     }
   };
 
+  const displayCityName = selectedCity === "Taiwan" ? "臺灣" : selectedCity;
+
   return (
     <div className="noto-sans-sc">
-      <h2 className="data-heading">天氣預報資訊</h2>
+      <h2 className="data-heading">{displayCityName}天氣資訊</h2>
 
       {selectedCity === "Taiwan" && (
         <>
