@@ -90,7 +90,7 @@ const WeatherDataCity = ({ city }) => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="data-container2 noto-sans-sc">
+    <div className="data-container3 noto-sans-sc">
       {cityWeatherData.Location?.map((location, index) => (
         <div key={index}>
           <h3>地點名稱：{location.LocationName}</h3>
