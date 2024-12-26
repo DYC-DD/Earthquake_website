@@ -21,28 +21,28 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
   // 設定每個縣市的縮放級別
   const cityZoomLevels = {
     Taiwan: { desktop: 8.6, mobile: 7 },
-    基隆市: { desktop: 12, mobile: 10 },
-    臺北市: { desktop: 12, mobile: 10 },
-    新北市: { desktop: 12, mobile: 10 },
-    桃園市: { desktop: 12, mobile: 10 },
-    新竹縣: { desktop: 12, mobile: 10 },
-    新竹市: { desktop: 12, mobile: 10 },
-    苗栗縣: { desktop: 12, mobile: 10 },
-    臺中市: { desktop: 12, mobile: 10 },
-    彰化縣: { desktop: 12, mobile: 10 },
-    南投縣: { desktop: 12, mobile: 10 },
-    雲林縣: { desktop: 12, mobile: 10 },
-    嘉義縣: { desktop: 12, mobile: 10 },
-    嘉義市: { desktop: 12, mobile: 10 },
-    臺南市: { desktop: 12, mobile: 10 },
-    高雄市: { desktop: 12, mobile: 10 },
-    屏東縣: { desktop: 12, mobile: 10 },
-    宜蘭縣: { desktop: 12, mobile: 10 },
-    花蓮縣: { desktop: 12, mobile: 10 },
-    臺東縣: { desktop: 12, mobile: 10 },
-    澎湖縣: { desktop: 12, mobile: 10 },
-    金門縣: { desktop: 12, mobile: 10 },
-    連江縣: { desktop: 12, mobile: 10 },
+    基隆市: { desktop: 12.5, mobile: 12.5 },
+    臺北市: { desktop: 12.4, mobile: 11.7 },
+    新北市: { desktop: 11.1, mobile: 11 },
+    桃園市: { desktop: 11.8, mobile: 10.9 },
+    新竹縣: { desktop: 12, mobile: 10.9 },
+    新竹市: { desktop: 12.5, mobile: 12.4 },
+    苗栗縣: { desktop: 11.6, mobile: 10.5 },
+    臺中市: { desktop: 11.7, mobile: 10.6 },
+    彰化縣: { desktop: 11.6, mobile: 10.8 },
+    南投縣: { desktop: 11.1, mobile: 10.1 },
+    雲林縣: { desktop: 11.5, mobile: 10.4 },
+    嘉義縣: { desktop: 11.4, mobile: 10.2 },
+    嘉義市: { desktop: 12.5, mobile: 12.3 },
+    臺南市: { desktop: 11.3, mobile: 10.4 },
+    高雄市: { desktop: 11.2, mobile: 10.8 },
+    屏東縣: { desktop: 11.2, mobile: 10.2 },
+    宜蘭縣: { desktop: 11.5, mobile: 10.6 },
+    花蓮縣: { desktop: 10.6, mobile: 10 },
+    臺東縣: { desktop: 10.4, mobile: 10 },
+    澎湖縣: { desktop: 11.4, mobile: 10.2 },
+    金門縣: { desktop: 12.1, mobile: 11 },
+    連江縣: { desktop: 11.6, mobile: 10.4 },
   };
 
   useEffect(() => {
@@ -136,7 +136,7 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
       <MapContainer
         center={defaultCenter}
         zoom={zoomLevel}
-        zoomSnap={0.2}
+        zoomSnap={0.1}
         zoomDelta={0.2}
         style={{ height: "100%", width: "100%" }}
       >

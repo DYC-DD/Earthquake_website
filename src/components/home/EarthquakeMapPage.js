@@ -52,10 +52,10 @@ const EarthquakeMapPage = ({ allEarthquakes }) => {
         </select>
       </div>
 
-      <div class="text-with-dot">
-        <span class="green-dot"></span>
+      <div className="text-with-dot">
+        <span className="green-dot"></span>
         <p>：小區域有感地震</p>
-        <span class="red-dot"></span>
+        <span className="red-dot"></span>
         <p>：顯著有感地震</p>
       </div>
     </div>

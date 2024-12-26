@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 const WeatherDataCity = ({ city }) => {
-  // 定義狀態：城市天氣資料、讀取狀態、錯誤訊息
   const [cityWeatherData, setCityWeatherData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 各城市對應的 API Code
   const cityApiMap = {
     基隆市: "F-D0047-049",
     臺北市: "F-D0047-061",
@@ -95,20 +93,6 @@ const WeatherDataCity = ({ city }) => {
         <div key={index}>
           <h3>地點名稱：{location.LocationName}</h3>
 
-          {/**
-           * 針對每個 WeatherElement
-           * 以下針對：
-           *  1) 溫度
-           *  2) 露點溫度 (DewPoint)
-           *  3) 相對濕度 (RelativeHumidity)
-           *  4) 體感溫度 (ApparentTemperature)
-           *  5) 舒適度指數 (ComfortIndex, ComfortIndexDescription)
-           *  6) 風速 (WindSpeed, BeaufortScale)
-           *  7) 風向 (WindDirection)
-           *  8) 3小時降雨機率 (StartTime~EndTime, ProbabilityOfPrecipitation)
-           *  9) 天氣現象 (StartTime~EndTime, Weather, WeatherCode)
-           * 10) 天氣預報綜合描述 (StartTime~EndTime, WeatherDescription)
-           */}
           {location.WeatherElement.map((element) => {
             const eName = element.ElementName;
             const targetElements = [
@@ -118,10 +102,8 @@ const WeatherDataCity = ({ city }) => {
               "體感溫度",
               "舒適度指數",
               "風速",
-              "風向",
-              "3小時降雨機率",
               "天氣現象",
-              "天氣預報綜合描述",
+              // "天氣預報綜合描述",
             ];
 
             if (!targetElements.includes(eName)) {
@@ -132,13 +114,12 @@ const WeatherDataCity = ({ city }) => {
             const currentTimeData = element.Time.find((time, idx, arr) => {
               const nextTime =
                 arr[idx + 1]?.StartTime || arr[idx + 1]?.DataTime;
-              // 如果這個時間點是用 DataTime，就沒有 StartTime/EndTime
               const start = time.StartTime || time.DataTime;
               const end = nextTime || time.EndTime;
               return isNowInRange(start, end);
             });
 
-            // 找到未來的所有時段（StartTime > now 或 DataTime > now）
+            // 找到未來的所有時段
             const futureTimeData = element.Time.filter((time) => {
               const start = time.StartTime || time.DataTime;
               return isFutureTime(start);
@@ -148,41 +129,79 @@ const WeatherDataCity = ({ city }) => {
               if (!time) return "";
               switch (eName) {
                 case "溫度":
-                  return `溫度：${time.ElementValue?.[0]?.Temperature} °C`;
+                  return <>溫度：{time.ElementValue?.[0]?.Temperature} °C</>;
+
                 case "露點溫度":
-                  return `露點溫度：${time.ElementValue?.[0]?.DewPoint} °C`;
+                  return <>露點溫度：{time.ElementValue?.[0]?.DewPoint} °C</>;
+
                 case "相對濕度":
-                  return `相對濕度：${time.ElementValue?.[0]?.RelativeHumidity} %`;
+                  return (
+                    <>相對濕度：{time.ElementValue?.[0]?.RelativeHumidity} %</>
+                  );
+
                 case "體感溫度":
-                  return `體感溫度：${time.ElementValue?.[0]?.ApparentTemperature} °C`;
+                  return (
+                    <>
+                      體感溫度：{time.ElementValue?.[0]?.ApparentTemperature} °C
+                    </>
+                  );
+
                 case "舒適度指數":
                   return (
-                    `舒適度指數：${time.ElementValue?.[0]?.ComfortIndex}\n` +
-                    `描述：${time.ElementValue?.[0]?.ComfortIndexDescription}`
+                    <>
+                      舒適度指數：{time.ElementValue?.[0]?.ComfortIndex}
+                      <br />
+                      描述：{time.ElementValue?.[0]?.ComfortIndexDescription}
+                    </>
                   );
+
                 case "風速":
-                  return (
-                    `風速：${time.ElementValue?.[0]?.WindSpeed} m/s\n` +
-                    `蒲福風級：${time.ElementValue?.[0]?.BeaufortScale}`
+                  const windDirection = location.WeatherElement.find(
+                    (el) => el.ElementName === "風向"
                   );
-                case "風向":
-                  return `風向：${time.ElementValue?.[0]?.WindDirection}`;
-                case "3小時降雨機率":
+                  const windDirValue = windDirection?.Time.find(
+                    (dirTime) =>
+                      dirTime.StartTime === time.StartTime ||
+                      dirTime.DataTime === time.DataTime
+                  )?.ElementValue?.[0]?.WindDirection;
                   return (
-                    `降雨時間：${time.StartTime} ~ ${time.EndTime}\n` +
-                    `降雨機率：${time.ElementValue?.[0]?.ProbabilityOfPrecipitation} %`
+                    <>
+                      風速：{time.ElementValue?.[0]?.WindSpeed} m/s
+                      <br />
+                      蒲福風級：{time.ElementValue?.[0]?.BeaufortScale}
+                      <br />
+                      風向：{windDirValue || "N/A"}
+                    </>
                   );
+
                 case "天氣現象":
-                  return (
-                    `現象時間：${time.StartTime} ~ ${time.EndTime}\n` +
-                    `天氣現象：${time.ElementValue?.[0]?.Weather}\n` +
-                    `現象代碼：${time.ElementValue?.[0]?.WeatherCode}`
+                  const rainProbability = location.WeatherElement.find(
+                    (el) => el.ElementName === "3小時降雨機率"
                   );
-                case "天氣預報綜合描述":
+                  const rainProbValue = rainProbability?.Time.find(
+                    (rainTime) =>
+                      rainTime.StartTime === time.StartTime ||
+                      rainTime.DataTime === time.DataTime
+                  )?.ElementValue?.[0]?.ProbabilityOfPrecipitation;
                   return (
-                    `預報時間：${time.StartTime} ~ ${time.EndTime}\n` +
-                    `描述：${time.ElementValue?.[0]?.WeatherDescription}`
+                    <>
+                      天氣現象：{time.ElementValue?.[0]?.Weather}
+                      <br />
+                      現象代碼：{time.ElementValue?.[0]?.WeatherCode}
+                      <br />
+                      降雨機率：{rainProbValue || "N/A"} %
+                    </>
                   );
+
+                // case "天氣預報綜合描述":
+                //   return (
+                //     <>
+                //       預報時間：{time.StartTime} ~ {time.EndTime}
+                //       <br />
+                //       描述：{time.ElementValue?.[0]?.WeatherDescription}
+                //     </>
+                //   );
+
                 default:
                   return "";
               }
@@ -224,29 +243,32 @@ const WeatherDataCity = ({ city }) => {
                       `描述：${time.ElementValue?.[0]?.ComfortIndexDescription}`,
                   };
                 case "風速":
+                  const windDirection = location.WeatherElement.find(
+                    (el) => el.ElementName === "風向"
+                  );
+                  const windDirValue = windDirection?.Time.find(
+                    (dirTime) =>
+                      dirTime.StartTime === time.StartTime ||
+                      dirTime.DataTime === time.DataTime
+                  )?.ElementValue?.[0]?.WindDirection;
+
                   return {
                     title: `${dtDate} ${dtTime}`,
                     detail:
                       `風速：${time.ElementValue?.[0]?.WindSpeed} m/s\n` +
-                      `蒲福風級：${time.ElementValue?.[0]?.BeaufortScale}`,
-                  };
-                case "風向":
-                  return {
-                    title: `${dtDate} ${dtTime}`,
-                    detail: `風向：${time.ElementValue?.[0]?.WindDirection}`,
-                  };
-                case "3小時降雨機率":
-                  const { date: sDate, time: sTime } = formatDateTime(
-                    time.StartTime
-                  );
-                  const { date: eDate, time: eTime } = formatDateTime(
-                    time.EndTime
-                  );
-                  return {
-                    title: `${sDate} ${sTime} ~ ${eDate} ${eTime}`,
-                    detail: `降雨機率：${time.ElementValue?.[0]?.ProbabilityOfPrecipitation} %`,
+                      `蒲福風級：${time.ElementValue?.[0]?.BeaufortScale}\n` +
+                      `風向：${windDirValue || "N/A"}`,
                   };
                 case "天氣現象":
+                  const rainProbability = location.WeatherElement.find(
+                    (el) => el.ElementName === "3小時降雨機率"
+                  );
+                  const rainProbValue = rainProbability?.Time.find(
+                    (rainTime) =>
+                      rainTime.StartTime === time.StartTime ||
+                      rainTime.DataTime === time.DataTime
+                  )?.ElementValue?.[0]?.ProbabilityOfPrecipitation;
+
                   const { date: swDate, time: swTime } = formatDateTime(
                     time.StartTime
                   );
@@ -257,19 +279,20 @@ const WeatherDataCity = ({ city }) => {
                     title: `${swDate} ${swTime} ~ ${ewDate} ${ewTime}`,
                     detail:
                       `天氣現象：${time.ElementValue?.[0]?.Weather}\n` +
-                      `現象代碼：${time.ElementValue?.[0]?.WeatherCode}`,
+                      `現象代碼：${time.ElementValue?.[0]?.WeatherCode}\n` +
+                      `降雨機率：${rainProbValue || "N/A"} %`,
                   };
-                case "天氣預報綜合描述":
-                  const { date: sdDate, time: sdTime } = formatDateTime(
-                    time.StartTime
-                  );
-                  const { date: edDate, time: edTime } = formatDateTime(
-                    time.EndTime
-                  );
-                  return {
-                    title: `${sdDate} ${sdTime} ~ ${edDate} ${edTime}`,
-                    detail: `描述：${time.ElementValue?.[0]?.WeatherDescription}`,
-                  };
+                // case "天氣預報綜合描述":
+                //   const { date: sdDate, time: sdTime } = formatDateTime(
+                //     time.StartTime
+                //   );
+                //   const { date: edDate, time: edTime } = formatDateTime(
+                //     time.EndTime
+                //   );
+                //   return {
+                //     title: `${sdDate} ${sdTime} ~ ${edDate} ${edTime}`,
+                //     detail: `描述：${time.ElementValue?.[0]?.WeatherDescription}`,
+                //   };
                 default:
                   return { title: "", detail: "" };
               }
