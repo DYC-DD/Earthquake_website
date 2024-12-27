@@ -4,13 +4,12 @@ import {
   TileLayer,
   GeoJSON,
   Marker,
-  Circle,
   useMap,
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
+const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
   const [zoomLevel, setZoomLevel] = useState(null);
   const [geojsonData, setGeojsonData] = useState(null);
   const [cityCenters, setCityCenters] = useState(null);
@@ -91,6 +90,52 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
     fetchCityCenters();
   }, []);
 
+  // 鄉鎮使用的 Icon
+  const createTownIcon = (weatherCode) => {
+    const iconSize = isMobile ? 30 : 50;
+    const iconAnchor = iconSize / 2;
+    const iconUrl = `${process.env.PUBLIC_URL}/icons/${weatherCode}.svg`;
+
+    return L.divIcon({
+      html: `
+        <div style="position: relative;  width: ${iconSize}px; height: ${iconSize}px;">
+          <div style="
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: ${iconSize}px;;
+            height: ${iconSize}px;;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background-color:rgb(0, 0, 0, 0.6);
+            // border: 1px solid rgb(255, 0, 0, 0.8);
+          "></div>
+  
+          <img
+            src="${iconUrl}"
+            alt="Weather Icon"
+            style="
+              position: absolute;
+              top: 50%; 
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width:  ${iconSize - 6}px;
+              height:  ${iconSize - 6}px;
+            "
+          />
+        </div>
+      `,
+      className: "",
+      iconSize: [iconSize, iconSize],
+      iconAnchor: [iconAnchor, iconAnchor],
+
+      // 如果背景刪掉需要此行
+      // iconUrl,
+      // iconSize: isMobile ? [30, 30] : [50, 50],
+      // iconAnchor: isMobile ? [15, 15] : [25, 25],
+    });
+  };
+
   useEffect(() => {
     // 更新切換城市的轉場效果
     if (selectedCity === transitionCity) return;
@@ -103,11 +148,46 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
   }, [selectedCity]);
 
   const createIcon = (wxValue) => {
+    const iconSize = isMobile ? 30 : 50;
+    const iconAnchor = iconSize / 2;
     const iconUrl = `${process.env.PUBLIC_URL}/icons/${wxValue}.svg`;
-    return L.icon({
-      iconUrl,
-      iconSize: isMobile ? [30, 30] : [50, 50],
-      iconAnchor: isMobile ? [15, 15] : [25, 25],
+    return L.divIcon({
+      html: `
+        <div style="position: relative;  width: ${iconSize}px; height: ${iconSize}px;">
+          <div style="
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: ${iconSize}px;;
+            height: ${iconSize}px;;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background-color:rgb(0, 0, 0, 0.6);
+            // border: 1px solid rgb(255, 0, 0, 0.8);
+          "></div>
+  
+          <img
+            src="${iconUrl}"
+            alt="Weather Icon"
+            style="
+              position: absolute;
+              top: 50%; 
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width:  ${iconSize - 6}px;
+              height:  ${iconSize - 6}px;
+            "
+          />
+        </div>
+      `,
+      className: "",
+      iconSize: [iconSize, iconSize],
+      iconAnchor: [iconAnchor, iconAnchor],
+
+      // 如果背景刪掉需要此行
+      // iconUrl,
+      // iconSize: isMobile ? [30, 30] : [50, 50],
+      // iconAnchor: isMobile ? [15, 15] : [25, 25],
     });
   };
 
@@ -190,24 +270,22 @@ const WeatherMap = ({ weatherDataByCity, selectedCity }) => {
             );
           })}
 
-        {/* 在選中的縣市顯示鄉鎮圈 */}
         {selectedCity !== "Taiwan" &&
           cityCenters &&
           cityCenters[selectedCity]?.towns &&
-          Object.entries(cityCenters[selectedCity].towns).map(
-            ([townName, coords]) => (
-              <Circle
+          townWeatherData &&
+          townWeatherData.map(({ townName, weatherCode }) => {
+            const coords = cityCenters[selectedCity].towns[townName];
+            if (!coords) return null;
+
+            return (
+              <Marker
                 key={townName}
-                center={[coords[1], coords[0]]}
-                radius={500}
-                pathOptions={{
-                  color: "#ff7800",
-                  fillColor: "#ff9100",
-                  fillOpacity: 0.5,
-                }}
+                position={[coords[1], coords[0]]}
+                icon={createTownIcon(weatherCode)}
               />
-            )
-          )}
+            );
+          })}
 
         <UpdateMapView city={transitionCity} />
       </MapContainer>

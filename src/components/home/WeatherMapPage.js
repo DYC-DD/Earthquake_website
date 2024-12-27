@@ -10,6 +10,7 @@ const WeatherMapPage = ({
 }) => {
   const [forecastTime, setForecastTime] = useState(null);
   const [weatherDataByCity, setWeatherDataByCity] = useState([]);
+  const [townWeatherData, setTownWeatherData] = useState([]);
 
   const handleForecastTime = (timeInfo) => {
     if (!forecastTime) setForecastTime(timeInfo);
@@ -58,6 +59,7 @@ const WeatherMapPage = ({
       <WeatherMap
         weatherDataByCity={weatherDataByCity}
         selectedCity={selectedCity}
+        townWeatherData={townWeatherData}
       />
 
       <div className="controls">
@@ -79,7 +81,12 @@ const WeatherMapPage = ({
         />
       )}
 
-      {!selectedCity === "Taiwan" && <WeatherDataCity city={selectedCity} />}
+      {selectedCity !== "Taiwan" && (
+        <WeatherDataCity
+          city={selectedCity}
+          onTownWeatherData={setTownWeatherData}
+        />
+      )}
     </div>
   );
 };
