@@ -125,6 +125,8 @@ const WeatherDataCity = ({ city }) => {
               return isFutureTime(start);
             });
 
+            const displayTimeData = currentTimeData || futureTimeData[0];
+
             const getCurrentValue = (time) => {
               if (!time) return "";
               switch (eName) {
@@ -358,13 +360,13 @@ const WeatherDataCity = ({ city }) => {
             return (
               <div key={eName} className="WD-group">
                 {/* 1. 目前時段資料顯示 */}
-                {currentTimeData && (
+                {displayTimeData && (
                   <div className="WD-type">
                     <p>
                       目前時段：
-                      {getCurrentTimeDisplay(currentTimeData)}
+                      {getCurrentTimeDisplay(displayTimeData)}
                       <br />
-                      {getCurrentValue(currentTimeData)}
+                      {getCurrentValue(displayTimeData)}
                     </p>
                   </div>
                 )}
