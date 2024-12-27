@@ -20,7 +20,7 @@ const WeatherMapPage = ({
   };
 
   const cityOrder = [
-    "臺灣",
+    // "臺灣",
     "基隆市",
     "臺北市",
     "新北市",

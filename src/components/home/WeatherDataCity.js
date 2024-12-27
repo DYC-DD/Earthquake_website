@@ -91,7 +91,7 @@ const WeatherDataCity = ({ city }) => {
     <div className="data-container3 noto-sans-sc">
       {cityWeatherData.Location?.map((location, index) => (
         <div key={index}>
-          <h3>地點名稱：{location.LocationName}</h3>
+          <h2>{location.LocationName}</h2>
 
           {location.WeatherElement.map((element) => {
             const eName = element.ElementName;

@@ -538,8 +538,29 @@ h3 {
 }
 
 /* ========== 天氣 Map ========== */
+.map-page2 {
+  border: 1px solid #525252;
+  border-radius: 10px;
+  background-color: #333333;
+  display: flex;
+  width: 1050px;
+  height: 1150px;
+  justify-content: center;
+  color: #e2e8f0;
+}
 
 /* ========== 天氣 Data ========== */
+.data-page2 {
+  display: flex;
+  justify-content: center;
+  border: 1px solid #525252;
+  border-radius: 10px;
+  background-color: #333333;
+  width: 525px;
+  height: 1150px;
+  color: #e2e8f0;
+}
+
 .data-container2 {
   width: 500px;
   height: 1030px;
@@ -625,12 +646,23 @@ h3 {
     padding: 4px;
   }
 
+  .map-page2 {
+    width: 98%;
+    height: auto;
+    padding: 4px;
+  }
+
   .map-container {
     width: 50vh;
     height: 50vh;
   }
 
   .data-page {
+    width: 98%;
+    height: 650px;
+  }
+
+  .data-page2 {
     width: 98%;
     height: 650px;
   }

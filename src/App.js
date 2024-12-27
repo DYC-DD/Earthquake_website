@@ -45,13 +45,13 @@ const App = () => {
             path="/Weather"
             element={
               <div className="content">
-                <div className="map-page">
+                <div className="map-page2">
                   <WXMapPage
                     selectedCity={selectedCity}
                     setSelectedCity={setSelectedCity}
                   />
                 </div>
-                <div className="data-page">
+                <div className="data-page2">
                   <WXDataPage
                     onAllEarthquakes={setAllEarthquakes}
                     selectedCity={selectedCity}
