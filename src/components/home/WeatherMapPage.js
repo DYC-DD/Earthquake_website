@@ -82,10 +82,12 @@ const WeatherMapPage = ({
       )}
 
       {selectedCity !== "Taiwan" && (
-        <WeatherDataCity
-          city={selectedCity}
-          onTownWeatherData={setTownWeatherData}
-        />
+        <div style={{ display: "none" }}>
+          <WeatherDataCity
+            city={selectedCity}
+            onTownWeatherData={setTownWeatherData}
+          />
+        </div>
       )}
     </div>
   );
