@@ -400,7 +400,7 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
   return (
     <div className="data-container3 noto-sans-sc">
       {cityWeatherData.Location?.map((location, index) => (
-        <div key={index}>
+        <div key={index} className="town-box">
           <h2>{location.LocationName}</h2>
 
           {/** 這裡是你的既有邏輯，只是縮排調整 */}
@@ -429,7 +429,7 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
               <div key={eName} className="WD-group">
                 {/* 1. 目前時段資料顯示 */}
                 {displayTimeData && (
-                  <div className="WD-type">
+                  <div>
                     <p>
                       目前時段：{getCurrentTimeDisplay(displayTimeData)}
                       <br />
@@ -459,8 +459,6 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
               </div>
             );
           })}
-          <hr />
-          <br />
         </div>
       ))}
     </div>
