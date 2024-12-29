@@ -1,5 +1,25 @@
 import React, { useState, useEffect } from "react";
 
+const isNightTime = () => {
+  const now = new Date();
+  const hours = now.getHours();
+  return hours >= 18 || hours < 6;
+};
+
+const getIconPath = (weatherCode) => {
+  const baseIconPath = `${process.env.PUBLIC_URL}/icons/${weatherCode}.svg`;
+  const nightIconPath = `${process.env.PUBLIC_URL}/icons/${weatherCode}(1).svg`;
+
+  if (isNightTime()) {
+    const img = new Image();
+    img.src = nightIconPath;
+    if (img.complete || img.naturalWidth !== 0) {
+      return nightIconPath;
+    }
+  }
+  return baseIconPath;
+};
+
 const WeatherDataCity = ({ city, onTownWeatherData }) => {
   const [cityWeatherData, setCityWeatherData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -264,7 +284,7 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
           /^0+/,
           ""
         );
-        const iconPath = `${process.env.PUBLIC_URL}/icons/${weatherCode}.svg`;
+        const iconPath = getIconPath(weatherCode);
 
         return (
           <>

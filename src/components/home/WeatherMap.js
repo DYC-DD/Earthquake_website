@@ -94,7 +94,7 @@ const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
   const createTownIcon = (weatherCode) => {
     const iconSize = isMobile ? 30 : 50;
     const iconAnchor = iconSize / 2;
-    const iconUrl = `${process.env.PUBLIC_URL}/icons/${weatherCode}.svg`;
+    const iconUrl = getIconPath(weatherCode);
 
     return L.divIcon({
       html: `
@@ -147,10 +147,30 @@ const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
     return () => clearTimeout(timeout);
   }, [selectedCity]);
 
+  const isNightTime = () => {
+    const now = new Date();
+    const hours = now.getHours();
+    return hours >= 18 || hours < 6;
+  };
+
+  const getIconPath = (weatherCode) => {
+    const baseIconPath = `${process.env.PUBLIC_URL}/icons/${weatherCode}.svg`;
+    const nightIconPath = `${process.env.PUBLIC_URL}/icons/${weatherCode}(1).svg`;
+
+    if (isNightTime()) {
+      const img = new Image();
+      img.src = nightIconPath;
+      if (img.complete || img.naturalWidth !== 0) {
+        return nightIconPath;
+      }
+    }
+    return baseIconPath;
+  };
+
   const createIcon = (wxValue) => {
     const iconSize = isMobile ? 30 : 50;
     const iconAnchor = iconSize / 2;
-    const iconUrl = `${process.env.PUBLIC_URL}/icons/${wxValue}.svg`;
+    const iconUrl = getIconPath(wxValue);
     return L.divIcon({
       html: `
         <div style="position: relative;  width: ${iconSize}px; height: ${iconSize}px;">

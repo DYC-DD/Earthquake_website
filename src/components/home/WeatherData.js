@@ -80,6 +80,27 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
     }
   }, [sortedWeatherData, onForecastTime]);
 
+  const isNightTime = () => {
+    const now = new Date();
+    const hours = now.getHours();
+    return hours >= 18 || hours < 6;
+  };
+
+  const getIconSrc = (wxValue) => {
+    const baseIconPath = `${process.env.PUBLIC_URL}/icons/${wxValue}.svg`;
+    const nightIconPath = `${process.env.PUBLIC_URL}/icons/${wxValue}(1).svg`;
+
+    if (isNightTime()) {
+      const img = new Image();
+      img.src = nightIconPath;
+      if (img.complete || img.naturalWidth !== 0) {
+        return nightIconPath;
+      }
+    }
+
+    return baseIconPath;
+  };
+
   return (
     <div className="data-container2">
       {sortedWeatherData.map((location, index) => {
@@ -111,7 +132,7 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
           ?.parameterName;
         const wxValue = currentWxData?.parameterValue;
 
-        const iconSrc = `${process.env.PUBLIC_URL}/icons/${wxValue}.svg`;
+        const iconSrc = getIconSrc(wxValue);
 
         return (
           <div key={index}>
