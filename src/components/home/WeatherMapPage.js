@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import WeatherData from "./WeatherData";
 import WeatherDataCity from "./WeatherDataCity";
 import WeatherMap from "./WeatherMap";
+import ReactGA from "react-ga4";
 
 const WeatherMapPage = ({
   onAllEarthquakes,
@@ -17,11 +18,18 @@ const WeatherMapPage = ({
   };
 
   const handleCityChange = (event) => {
-    setSelectedCity(event.target.value);
+    const selected = event.target.value;
+    setSelectedCity(selected);
+
+    // 發送 Google Analytics 事件
+    ReactGA.event({
+      category: "Weather",
+      action: "Select City",
+      label: selected,
+    });
   };
 
   const cityOrder = [
-    // "臺灣",
     "基隆市",
     "臺北市",
     "新北市",
