@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   HashRouter as Router,
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
+import ReactGA from "react-ga4";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import EQMapPage from "./components/home/EarthquakeMapPage";
@@ -15,12 +17,32 @@ import KnowledgePage from "./components/pages/KnowledgePage";
 import ContactPage from "./components/pages/ContactPage";
 import "./styles.css";
 
+// 初始化 Google Analytics
+const TRACKING_ID = "G-ME96EL8WZC";
+ReactGA.initialize(TRACKING_ID);
+
+// 自訂 Hook 用於追蹤頁面切換
+const usePageTracking = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: location.pathname });
+  }, [location]);
+};
+
+// 新增組件以簡化 Hook 整合
+const PageTracker = () => {
+  usePageTracking();
+  return null;
+};
+
 const App = () => {
   const [allEarthquakes, setAllEarthquakes] = useState([]);
   const [selectedCity, setSelectedCity] = useState("Taiwan");
 
   return (
     <Router>
+      <PageTracker />
       <div className="App">
         <Header />
         <Routes>
