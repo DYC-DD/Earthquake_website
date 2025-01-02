@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import isEqual from "lodash/isEqual";
+import ReactGA from "react-ga4";
 
 // 資料顯示元件 (純粹顯示地震資料，不處理動畫)
 const EarthquakeDataDisplay = React.memo(({ earthquakes }) => {
@@ -7,6 +8,17 @@ const EarthquakeDataDisplay = React.memo(({ earthquakes }) => {
     if (!location) return "無資料";
     return location.replace("(位於", "<br/>(位於");
   };
+
+  // 點擊 WebLink 事件處理
+  const handleWebLinkClick = (earthquakeNo, webLink) => {
+    ReactGA.event({
+      category: "Earthquake",
+      action: "Click WebLink (Data)",
+      label: `EarthquakeNo: ${earthquakeNo}`,
+      value: webLink,
+    });
+  };
+
   return (
     <div className="data-container">
       {earthquakes.map((eq, index) => {
@@ -32,7 +44,12 @@ const EarthquakeDataDisplay = React.memo(({ earthquakes }) => {
               }}
             ></p>
             {eq.Web ? (
-              <a href={eq.Web} target="_blank" rel="noopener noreferrer">
+              <a
+                href={eq.Web}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => handleWebLinkClick(earthquakeNo, eq.Web)}
+              >
                 點此查看詳細報告
               </a>
             ) : (

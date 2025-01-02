@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Circle, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import ReactGA from "react-ga4";
 
 const EarthquakeMap = ({ recentEarthquakes }) => {
   // 根據螢幕寬度動態設置地圖縮放層級
@@ -71,6 +72,24 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
 
   // 若無地震資料，預設中心為台灣經緯度
   const defaultCenter = [23.6978, 120.9605];
+
+  const handleMarkerClick = (earthquake) => {
+    ReactGA.event({
+      category: "Earthquake",
+      action: "Click Marker (Map)",
+      label: `EarthquakeNo: ${earthquake.earthquakeNo}`,
+    });
+    setPopupPosition([earthquake.latitude, earthquake.longitude]);
+    setSelectedEq(earthquake);
+  };
+
+  const handleWebLinkClick = (earthquake) => {
+    ReactGA.event({
+      category: "Earthquake",
+      action: "Click WebLink (Map)",
+      label: `EarthquakeNo: ${earthquake.earthquakeNo}`,
+    });
+  };
 
   return (
     <div className="map-container">
@@ -147,6 +166,12 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
                         href={webLink}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() =>
+                          handleWebLinkClick({
+                            earthquakeNo,
+                            webLink,
+                          })
+                        }
                       >
                         點此查看詳細報告
                       </a>
@@ -179,6 +204,12 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
                 href={selectedEq.webLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() =>
+                  handleWebLinkClick({
+                    earthquakeNo: selectedEq.earthquakeNo,
+                    webLink: selectedEq.webLink,
+                  })
+                }
               >
                 點此查看詳細報告
               </a>
