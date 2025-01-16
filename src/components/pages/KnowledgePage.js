@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { Helmet } from "react-helmet";
 
 const KnowledgePage = () => {
   const addHoverEffect = (element) => {
@@ -42,6 +43,11 @@ const KnowledgePage = () => {
 
   return (
     <div className="content">
+      <Helmet>
+        <title>地震基本知識與防災觀念</title>
+        <link rel="icon" href={`${process.env.PUBLIC_URL}/images/memo.png`} />
+      </Helmet>
+
       <div className="knowledge-page noto-sans-sc ">
         <div className="knowledge-container hover-effect">
           <h1>地震的基本概念</h1>

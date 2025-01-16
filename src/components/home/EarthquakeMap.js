@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Circle, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import ReactGA from "react-ga4";
+import { Helmet } from "react-helmet";
 
 const EarthquakeMap = ({ recentEarthquakes }) => {
   // 根據螢幕寬度動態設置地圖縮放層級
@@ -93,6 +94,14 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
 
   return (
     <div className="map-container">
+      <Helmet>
+        <title>即時地震資訊</title>
+        <link
+          rel="icon"
+          href={`${process.env.PUBLIC_URL}/images/volcano.png`}
+        />
+      </Helmet>
+
       <MapContainer
         center={defaultCenter}
         zoom={zoomLevel}

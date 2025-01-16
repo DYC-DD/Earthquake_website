@@ -8,6 +8,7 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { Helmet } from "react-helmet";
 
 const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
   const [zoomLevel, setZoomLevel] = useState(null);
@@ -233,6 +234,14 @@ const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
 
   return (
     <div className="map-container">
+      <Helmet>
+        <title>各縣市鄉鎮天氣預報</title>
+        <link
+          rel="icon"
+          href={`${process.env.PUBLIC_URL}/images/partly_sunny_rain.png`}
+        />
+      </Helmet>
+
       <MapContainer
         center={defaultCenter}
         zoom={zoomLevel}
