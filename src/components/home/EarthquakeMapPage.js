@@ -59,7 +59,7 @@ const EarthquakeMapPage = ({ allEarthquakes }) => {
           <option value={48}>過去48小時</option>
           <option value={72}>過去72小時</option>
           <option value={96}>過去96小時</option>
-          <option value={1000}>過去30比資訊</option>
+          <option value={1000}>近期所有資訊</option>
         </select>
       </div>
 
