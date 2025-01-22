@@ -1,6 +1,6 @@
 {
   "name": "earthquake-website",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "private": true,
   "homepage": "https://DYC-DD.github.io/Earthquake_website",
   "dependencies": {

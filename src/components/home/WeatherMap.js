@@ -261,7 +261,7 @@ const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
               const cityName = feature.properties.county;
               if (transitionCity === "Taiwan") {
                 return {
-                  color: "#3388ff",
+                  color: "#9D9D9D",
                   weight: 2,
                   opacity: 0.6,
                   fillColor: "#66ccff",
@@ -270,7 +270,7 @@ const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
               } else {
                 const isSelected = cityName === transitionCity;
                 return {
-                  color: isSelected ? "#3388ff" : "#4f4f4f",
+                  color: isSelected ? "#6C6C6C" : "#4f4f4f",
                   weight: 2,
                   opacity: isSelected ? 0.6 : 0.9,
                   fillColor: isSelected ? "#66ccff" : "#2c3e50",
