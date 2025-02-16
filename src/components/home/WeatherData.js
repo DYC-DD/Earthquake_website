@@ -163,7 +163,7 @@ const WeatherData = ({ onForecastTime, onWeatherDataByCity }) => {
     "https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001";
 
   const params = new URLSearchParams({
-    Authorization: "CWA-7E452C07-0B0D-41CF-9963-3BF25839B4A9",
+    Authorization: "CWA-76B91926-CFA1-4904-A185-D5881406DC5D",
     format: "JSON",
   });
 

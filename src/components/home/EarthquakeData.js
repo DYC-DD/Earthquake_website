@@ -76,7 +76,7 @@ const EarthquakeData = ({ onAllEarthquakes }) => {
       "https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-001";
 
     const params = new URLSearchParams({
-      Authorization: "CWA-8BD90424-B8CA-46C4-A974-633DC4E1502D",
+      Authorization: "CWA-2C2548C0-C157-4438-9574-720C2457265E",
       format: "JSON",
     });
 

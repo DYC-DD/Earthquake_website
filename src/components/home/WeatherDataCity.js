@@ -50,7 +50,7 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
     連江縣: "F-D0047-081",
   };
 
-  const AK = "CWA-7E452C07-0B0D-41CF-9963-3BF25839B4A9";
+  const AK = "CWA-76B91926-CFA1-4904-A185-D5881406DC5D";
 
   useEffect(() => {
     const fetchCityWeatherData = async () => {
