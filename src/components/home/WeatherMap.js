@@ -261,9 +261,9 @@ const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
               const cityName = feature.properties.county;
               if (transitionCity === "Taiwan") {
                 return {
-                  color: "#9D9D9D",
+                  color: "blue",
                   weight: 2,
-                  opacity: 0.6,
+                  opacity: 0.1,
                   fillColor: "#66ccff",
                   fillOpacity: 0,
                 };

@@ -2,6 +2,29 @@ import React, { useState, useEffect, useCallback } from "react";
 import isEqual from "lodash/isEqual";
 import ReactGA from "react-ga4";
 
+// 格式化日期，加入星期顯示
+const formatDateWithWeekday = (datetime) => {
+  if (!datetime) return "無資料";
+  const date = new Date(datetime);
+  const formattedDate = date
+    .toLocaleDateString("zh-TW", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .replace(/\//g, "/");
+  const formattedTime = date.toLocaleTimeString("zh-TW", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+  const weekday = new Intl.DateTimeFormat("zh-TW", { weekday: "short" }).format(
+    date
+  );
+  return `${formattedDate} (${weekday}) ${formattedTime}`;
+};
+
 // 資料顯示元件 (純粹顯示地震資料，不處理動畫)
 const EarthquakeDataDisplay = React.memo(({ earthquakes }) => {
   const formatLocation = (location) => {
@@ -35,7 +58,7 @@ const EarthquakeDataDisplay = React.memo(({ earthquakes }) => {
         return (
           <div key={index}>
             <p>地震編號：{earthquakeNo}</p>
-            <p>地震發生時間：{originTime}</p>
+            <p>地震發生時間：{formatDateWithWeekday(originTime)}</p>
             <p>地震規模：{magnitude}</p>
             <p>震源深度：{depth} 公里</p>
             <p

@@ -130,11 +130,25 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
   }, [cityWeatherData, onTownWeatherData]);
 
   const formatDateTime = (dateTime) => {
-    if (!dateTime) return { date: "", time: "" };
-    const [date, timeWithZone] = dateTime.split("T");
-    const timeWithoutZone = timeWithZone.replace("+08:00", "");
-    const [hour, minute] = timeWithoutZone.split(":");
-    return { date, time: `${hour}:${minute}` };
+    if (!dateTime) return "";
+    const date = new Date(dateTime);
+    const formattedDate = date
+      .toLocaleDateString("zh-TW", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+      .replace(/\//g, "/");
+    const formattedTime = date.toLocaleTimeString("zh-TW", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    const weekday = new Intl.DateTimeFormat("zh-TW", {
+      weekday: "short",
+    }).format(date);
+    return `${formattedDate} (${weekday}) ${formattedTime}`;
   };
 
   const isNowInRange = (startTime, endTime) => {
@@ -161,59 +175,118 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
   const getCurrentTimeDisplay = (time) => {
     if (!time) return "";
     if (time.DataTime) {
-      const { date, time: t } = formatDateTime(time.DataTime);
-      return `${date} ${t}`;
+      return formatDateTime(time.DataTime);
     }
     if (time.StartTime && time.EndTime) {
-      const { date: sDate, time: sTime } = formatDateTime(time.StartTime);
-      const { date: eDate, time: eTime } = formatDateTime(time.EndTime);
-      return `${sDate} ${sTime} ~ ${eDate} ${eTime}`;
+      return (
+        <>
+          {formatDateTime(time.StartTime)} ~ <br />
+          {formatDateTime(time.EndTime)}
+        </>
+      );
     }
     return "";
   };
 
-  // ===== 現在 =====
-  const getCurrentValue = (time, eName, location) => {
-    if (!time) return "";
+  const getFutureValue = (time, eName, location) => {
+    if (!time) return { title: "", detail: "" };
 
     switch (eName) {
       case "溫度": {
-        // 1) 尋找「體感溫度」資料
         const apparentTempElement = location.WeatherElement.find(
           (el) => el.ElementName === "體感溫度"
         );
         const apparentTempValue = apparentTempElement?.Time.find(
           (tempTime) => tempTime.DataTime === time.DataTime
         )?.ElementValue?.[0]?.ApparentTemperature;
-
-        // 2) 尋找「露點溫度」資料
-        const dewPointElement = location.WeatherElement.find(
-          (el) => el.ElementName === "露點溫度"
-        );
-        const dewPointValue = dewPointElement?.Time.find(
-          (dewTime) => dewTime.DataTime === time.DataTime
-        )?.ElementValue?.[0]?.DewPoint;
-
-        // 3) 尋找「相對濕度」資料
         const humidityElement = location.WeatherElement.find(
           (el) => el.ElementName === "相對濕度"
         );
         const humidityValue = humidityElement?.Time.find(
           (hTime) => hTime.DataTime === time.DataTime
         )?.ElementValue?.[0]?.RelativeHumidity;
-
-        // 4) 尋找「舒適度指數」(ComfortIndex) 與舒適度描述(ComfortIndexDescription)
         const comfortElement = location.WeatherElement.find(
           (el) => el.ElementName === "舒適度指數"
         );
-        const comfortIndexValue = comfortElement?.Time.find(
-          (cTime) => cTime.DataTime === time.DataTime
-        )?.ElementValue?.[0]?.ComfortIndex;
         const comfortDescValue = comfortElement?.Time.find(
           (cTime) => cTime.DataTime === time.DataTime
         )?.ElementValue?.[0]?.ComfortIndexDescription;
+        const temperatureValue = time.ElementValue?.[0]?.Temperature || "N/A";
 
-        // 5) 溫度(本要素)
+        return {
+          title: formatDateTime(time.DataTime || time.StartTime),
+          detail:
+            `溫度：${temperatureValue} °C` +
+            (apparentTempValue ? `\n體感溫度：${apparentTempValue} °C` : "") +
+            (humidityValue ? `\n相對濕度：${humidityValue} %` : "") +
+            (comfortDescValue ? `\n描述：${comfortDescValue}` : ""),
+        };
+      }
+
+      case "風速": {
+        const windDirection = location.WeatherElement.find(
+          (el) => el.ElementName === "風向"
+        );
+        const windDirValue = windDirection?.Time.find(
+          (dirTime) => dirTime.DataTime === time.DataTime
+        )?.ElementValue?.[0]?.WindDirection;
+        return {
+          title: formatDateTime(time.DataTime || time.StartTime),
+          detail:
+            `風速：${time.ElementValue?.[0]?.WindSpeed} m/s\n` +
+            `蒲福風級：${time.ElementValue?.[0]?.BeaufortScale}\n` +
+            `風向：${windDirValue || "N/A"}`,
+        };
+      }
+
+      case "天氣現象": {
+        const rainProbability = location.WeatherElement.find(
+          (el) => el.ElementName === "3小時降雨機率"
+        );
+        const rainProbValue = rainProbability?.Time.find((rainTime) => {
+          const start = new Date(rainTime.StartTime || rainTime.DataTime);
+          const end = new Date(rainTime.EndTime || start);
+          const futureStart = new Date(time.DataTime || time.StartTime);
+          return futureStart >= start && futureStart < end;
+        })?.ElementValue?.[0]?.ProbabilityOfPrecipitation;
+        return {
+          title: `${formatDateTime(time.StartTime)} ~ ${formatDateTime(
+            time.EndTime
+          )}`,
+          detail:
+            `天氣現象：${time.ElementValue?.[0]?.Weather}\n` +
+            `降雨機率：${rainProbValue || "N/A"} %`,
+        };
+      }
+
+      default:
+        return { title: "", detail: "" };
+    }
+  };
+
+  const getCurrentValue = (time, eName, location) => {
+    if (!time) return "";
+
+    switch (eName) {
+      case "溫度": {
+        const apparentTempElement = location.WeatherElement.find(
+          (el) => el.ElementName === "體感溫度"
+        );
+        const apparentTempValue = apparentTempElement?.Time.find(
+          (tempTime) => tempTime.DataTime === time.DataTime
+        )?.ElementValue?.[0]?.ApparentTemperature;
+        const humidityElement = location.WeatherElement.find(
+          (el) => el.ElementName === "相對濕度"
+        );
+        const humidityValue = humidityElement?.Time.find(
+          (hTime) => hTime.DataTime === time.DataTime
+        )?.ElementValue?.[0]?.RelativeHumidity;
+        const comfortElement = location.WeatherElement.find(
+          (el) => el.ElementName === "舒適度指數"
+        );
+        const comfortDescValue = comfortElement?.Time.find(
+          (cTime) => cTime.DataTime === time.DataTime
+        )?.ElementValue?.[0]?.ComfortIndexDescription;
         const temperatureValue = time.ElementValue?.[0]?.Temperature || "N/A";
 
         return (
@@ -226,24 +299,12 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
                 <br />
               </>
             )}
-            {/* {dewPointValue && (
-              <>
-                露點溫度：{dewPointValue} °C
-                <br />
-              </>
-            )} */}
             {humidityValue && (
               <>
                 相對濕度：{humidityValue} %
                 <br />
               </>
             )}
-            {/* {comfortIndexValue && (
-              <>
-                舒適度指數：{comfortIndexValue}
-                <br />
-              </>
-            )} */}
             {comfortDescValue && (
               <>
                 描述：{comfortDescValue}
@@ -279,7 +340,6 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
         const rainProbValue = rainProbability?.Time.find(
           (rainTime) => rainTime.DataTime === time.DataTime
         )?.ElementValue?.[0]?.ProbabilityOfPrecipitation;
-
         const weatherCode = time.ElementValue?.[0]?.WeatherCode?.replace(
           /^0+/,
           ""
@@ -302,128 +362,12 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
     }
   };
 
-  // ===== 未來 =====
-  const getFutureValue = (time, eName, location) => {
-    if (!time) return { title: "", detail: "" };
-
-    const { date: dtDate, time: dtTime } = formatDateTime(
-      time.DataTime || time.StartTime
-    );
-
-    switch (eName) {
-      case "溫度": {
-        // 1) 體感溫度
-        const apparentTempElement = location.WeatherElement.find(
-          (el) => el.ElementName === "體感溫度"
-        );
-        const apparentTempValue = apparentTempElement?.Time.find(
-          (tempTime) => tempTime.DataTime === time.DataTime
-        )?.ElementValue?.[0]?.ApparentTemperature;
-
-        // 2) 露點溫度
-        const dewPointElement = location.WeatherElement.find(
-          (el) => el.ElementName === "露點溫度"
-        );
-        const dewPointValue = dewPointElement?.Time.find(
-          (dewTime) => dewTime.DataTime === time.DataTime
-        )?.ElementValue?.[0]?.DewPoint;
-
-        // 3) 相對濕度
-        const humidityElement = location.WeatherElement.find(
-          (el) => el.ElementName === "相對濕度"
-        );
-        const humidityValue = humidityElement?.Time.find(
-          (hTime) => hTime.DataTime === time.DataTime
-        )?.ElementValue?.[0]?.RelativeHumidity;
-
-        // 4) 舒適度指數 & 描述
-        const comfortElement = location.WeatherElement.find(
-          (el) => el.ElementName === "舒適度指數"
-        );
-        const comfortIndexValue = comfortElement?.Time.find(
-          (cTime) => cTime.DataTime === time.DataTime
-        )?.ElementValue?.[0]?.ComfortIndex;
-        const comfortDescValue = comfortElement?.Time.find(
-          (cTime) => cTime.DataTime === time.DataTime
-        )?.ElementValue?.[0]?.ComfortIndexDescription;
-
-        // 5) 溫度
-        const temperatureValue = time.ElementValue?.[0]?.Temperature || "N/A";
-
-        // 回傳物件，title 與 detail 分別對應卡片標題、內容
-        return {
-          title: `${dtDate} ${dtTime}`,
-          detail:
-            `溫度：${temperatureValue} °C` +
-            (apparentTempValue ? `\n體感溫度：${apparentTempValue} °C` : "") +
-            // (dewPointValue ? `\n露點溫度：${dewPointValue} °C` : "") +
-            (humidityValue ? `\n相對濕度：${humidityValue} %` : "") +
-            // (comfortIndexValue ? `\n舒適度指數：${comfortIndexValue}` : "") +
-            (comfortDescValue ? `\n描述：${comfortDescValue}` : ""),
-        };
-      }
-
-      case "風速": {
-        const windDirection = location.WeatherElement.find(
-          (el) => el.ElementName === "風向"
-        );
-        const windDirValue = windDirection?.Time.find(
-          (dirTime) => dirTime.DataTime === time.DataTime
-        )?.ElementValue?.[0]?.WindDirection;
-
-        return {
-          title: `${dtDate} ${dtTime}`,
-          detail:
-            `風速：${time.ElementValue?.[0]?.WindSpeed} m/s\n` +
-            `蒲福風級：${time.ElementValue?.[0]?.BeaufortScale}\n` +
-            `風向：${windDirValue || "N/A"}`,
-        };
-      }
-
-      case "天氣現象": {
-        const rainProbability = location.WeatherElement.find(
-          (el) => el.ElementName === "3小時降雨機率"
-        );
-
-        const rainProbValue = rainProbability?.Time.find((rainTime) => {
-          const start = new Date(rainTime.StartTime || rainTime.DataTime);
-          const end = new Date(rainTime.EndTime || start);
-          const futureStart = new Date(time.DataTime || time.StartTime);
-          return futureStart >= start && futureStart < end;
-        })?.ElementValue?.[0]?.ProbabilityOfPrecipitation;
-
-        const { date: swDate, time: swTime } = formatDateTime(time.StartTime);
-        const { date: ewDate, time: ewTime } = formatDateTime(time.EndTime);
-
-        return {
-          title: `${swDate} ${swTime} ~ ${ewDate} ${ewTime}`,
-          detail:
-            `天氣現象：${time.ElementValue?.[0]?.Weather}\n` +
-            `降雨機率：${rainProbValue || "N/A"} %`,
-        };
-      }
-
-      default:
-        return { title: "", detail: "" };
-    }
-  };
-
-  if (!cityWeatherData.Location) {
-    // 可能是空資料時，保持原本的流程
-    return (
-      <div className="data-container3 noto-sans-sc">
-        {loading ? <div>Loading...</div> : <div>無資料</div>}
-      </div>
-    );
-  }
-
   return (
     <div className="data-container3 noto-sans-sc">
       {cityWeatherData.Location?.map((location, index) => (
         <div key={index} className="town-box">
           <h2>{location.LocationName}</h2>
 
-          {/** 這裡是你的既有邏輯，只是縮排調整 */}
           {targetElements.map((eName) => {
             const element = location.WeatherElement.find(
               (el) => el.ElementName === eName
@@ -447,7 +391,6 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
 
             return (
               <div key={eName} className="WD-group">
-                {/* 1. 目前時段資料顯示 */}
                 {displayTimeData && (
                   <div>
                     <p>
@@ -458,7 +401,6 @@ const WeatherDataCity = ({ city, onTownWeatherData }) => {
                   </div>
                 )}
 
-                {/* 2. 未來時段資料：可水平捲動 */}
                 {futureTimeData.length > 0 && (
                   <div className="WD-future-container">
                     {futureTimeData.map((time, idx) => {
