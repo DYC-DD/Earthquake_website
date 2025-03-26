@@ -635,6 +635,10 @@ h3 {
   margin: 0;
 }
 
+.FuzzyText {
+  margin: 50% 0;
+}
+
 /* ========== 其他設備樣式 ========== */
 @media (max-width: 768px) {
   .App {

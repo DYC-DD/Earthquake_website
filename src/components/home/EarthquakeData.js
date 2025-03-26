@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import isEqual from "lodash/isEqual";
 import ReactGA from "react-ga4";
+import FuzzyText from "../pages/FuzzyText";
 
 // 格式化日期，加入星期顯示
 const formatDateWithWeekday = (datetime) => {
@@ -199,7 +200,13 @@ const EarthquakeData = ({ onAllEarthquakes }) => {
   }
 
   if (error) {
-    return <div>發生錯誤：{error.message}</div>;
+    return (
+      <div className="FuzzyText">
+        <FuzzyText baseIntensity={0.2} vertical={true}>
+          伺服器異常
+        </FuzzyText>
+      </div>
+    );
   }
 
   // 將資料顯示與元件內部分離，以減少動畫區塊受到影響

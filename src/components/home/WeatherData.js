@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import isEqual from "lodash/isEqual";
+import FuzzyText from "../pages/FuzzyText";
 
 const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
   const orderedLocations = [
@@ -219,7 +220,13 @@ const WeatherData = ({ onForecastTime, onWeatherDataByCity }) => {
   }
 
   if (error) {
-    return <div>發生錯誤：{error.message}</div>;
+    return (
+      <div className="FuzzyText">
+        <FuzzyText baseIntensity={0.2} vertical={true}>
+          伺服器異常
+        </FuzzyText>
+      </div>
+    );
   }
 
   return (
