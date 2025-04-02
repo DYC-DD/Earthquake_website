@@ -38,4 +38,9 @@ jobs:
           to: dyccc01@gmail.com
           from: GitHub Action
           body: |
-            ⚠️ 系統偵測到 API 抓取異常，請檢查地震資訊網是否正常運作。 ⚠️
+            ⚠️ 系統偵測到 API 異常 ⚠️
+            錯誤時間（台灣時間）：${{ github.event.repository.updated_at }}
+            詳細錯誤資訊請見 GitHub Actions 日誌
+            檢查網址：https://github.com/DYC-DD/Earthquake_website/actions
+
+            請盡快檢查對應的氣象署 API 是否回應異常：https://opendata.cwa.gov.tw/dist/opendata-swagger.html
