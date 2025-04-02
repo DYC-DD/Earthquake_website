@@ -1,0 +1,41 @@
+name: API Health Check
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # cron 格式（UTC 時區）分 時 日 月 星期
+  workflow_dispatch:
+
+jobs:
+  check-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install node-fetch
+        run: npm install node-fetch@2
+
+      - name: Run API Health Check
+        run: node check_api_status.js
+        env:
+          CWA_API_KEY: ${{ secrets.CWA_API_KEY }}
+          CWA_API_URLS: ${{ secrets.CWA_API_URLS }}
+
+      - name: Send Email if Failed
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "🚨 地震資訊網 API 抓取異常警告 🚨"
+          to: dyccc01@gmail.com
+          from: GitHub Action
+          body: |
+            ⚠️ 系統偵測到 API 抓取異常，請檢查地震資訊網是否正常運作。 ⚠️
