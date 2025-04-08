@@ -1,30 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const TAGS = [
-  "DENG ©",
-  "交通部",
-  "地震測報中心",
-  "氣象資料開放平台",
-  "中央氣象署",
-  "React",
-  "JavaScript",
-  "HTML / CSS",
-  "Github Pages",
-  "Leaflet.js",
-  "2024",
-];
-
-// 動畫的基準持續時間，單位為毫秒
 const DURATION = 80000;
-
-// 定義滾動區塊的行數以及每行的標籤數量
 const ROWS = 3;
 const TAGS_PER_ROW = 30;
 
-const random = (min, max) => Math.floor(Math.random() * (min - min)) + min;
-const shuffle = (arr) => [...arr].sort(() => 0.5 - Math.random());
+const SHEETS_API_URL =
+  "https://script.google.com/macros/s/AKfycbzAmZutkMp__VVji8GoS1tpVHCOkfvyyN9jci7Nqtqjkb3UU0lCx5Csm1e3j6cGwgSBWg/exec";
 
-// 動態生成足夠的標籤數量
+const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+const shuffle = (arr) => [...arr].sort(() => 0.5 - Math.random());
 const generateTags = (tags, count) => {
   const result = [];
   while (result.length < count) {
@@ -33,7 +17,6 @@ const generateTags = (tags, count) => {
   return result.slice(0, count);
 };
 
-// 定義一個無限滾動的滑動區塊元件
 const InfiniteLoopSlider = ({ children, duration, reverse = false }) => {
   return (
     <div
@@ -51,7 +34,6 @@ const InfiniteLoopSlider = ({ children, duration, reverse = false }) => {
   );
 };
 
-// 定義單個標籤的元件，接受 `text` 作為標籤的顯示文字
 const Tag = ({ text }) => (
   <div className="tag">
     <span>#</span> {text}
@@ -59,6 +41,38 @@ const Tag = ({ text }) => (
 );
 
 const Footer = () => {
+  const [views, setViews] = useState(null);
+
+  useEffect(() => {
+    const fetchViews = async () => {
+      try {
+        const response = await fetch(SHEETS_API_URL);
+        const data = await response.json();
+        setViews(data.totalViews);
+      } catch (err) {
+        console.error("無法取得總瀏覽數：", err);
+        setViews("錯誤");
+      }
+    };
+
+    fetchViews();
+  }, []);
+
+  const TAGS = [
+    "交通部",
+    "地震測報中心",
+    views ? `Total websit visits ：${views}` : "載入中...",
+    "氣象資料開放平台",
+    "中央氣象署",
+    "React",
+    "JavaScript",
+    "HTML / CSS",
+    "Github Pages",
+    "Leaflet.js",
+    "2024",
+    "DYC",
+  ];
+
   return (
     <div className="noto-sans-sc">
       <footer className="footer">

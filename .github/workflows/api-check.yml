@@ -2,7 +2,7 @@ name: API Health Check
 
 on:
   schedule:
-    - cron: "0 */6 * * *" # cron 格式（UTC 時區）分 時 日 月 星期
+    - cron: "0 */1 * * *" # cron 格式（UTC 時區）分 時 日 月 星期
   workflow_dispatch:
 
 jobs:
