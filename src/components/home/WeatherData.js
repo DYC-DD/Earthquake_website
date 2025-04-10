@@ -222,7 +222,11 @@ const WeatherData = ({ onForecastTime, onWeatherDataByCity }) => {
   if (error) {
     return (
       <div className="FuzzyText">
-        <FuzzyText baseIntensity={0.2} vertical={true}>
+        <FuzzyText
+          fontSize="clamp(6rem, 5vw, 4rem)"
+          baseIntensity={0.2}
+          vertical={true}
+        >
           伺服器異常
         </FuzzyText>
       </div>
