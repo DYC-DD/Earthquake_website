@@ -18,11 +18,26 @@ const getTaiwanTimeString = () => {
   });
 };
 
-// 單一 API 檢查
+// fetch 包裝：加上 timeout 限制（5秒）
+const fetchWithTimeout = (url, options = {}, timeout = 5000) =>
+  Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) =>
+      setTimeout(
+        () => reject(new Error("⏰ 請求逾時（Timeout 5 秒）")),
+        timeout
+      )
+    ),
+  ]);
+
+let hasError = false;
+
 const checkAPI = async (url) => {
   try {
     const fullUrl = `${url}?Authorization=${apiKey}&format=JSON`;
-    const response = await fetch(fullUrl);
+    console.log(`[檢查中] ${fullUrl}`);
+
+    const response = await fetchWithTimeout(fullUrl);
 
     if (!response.ok) {
       throw new Error(`HTTP Status: ${response.status}`);
@@ -30,21 +45,22 @@ const checkAPI = async (url) => {
 
     const json = await response.json();
 
-    if (!json.records) {
-      throw new Error("⚠️ API 回傳格式異常：缺少 records 欄位");
+    if (!json.records || Object.keys(json.records).length === 0) {
+      throw new Error("⚠️ API 回傳格式異常：records 欄位為空或缺失");
     }
 
     console.log(`✅ [${getTaiwanTimeString()}] ${url} 正常`);
   } catch (err) {
     console.error(`❌ [${getTaiwanTimeString()}] ${url} 失敗`);
     console.error(`原因：${err.message}`);
-    process.exit(1);
+    hasError = true;
   }
 };
 
-// 依序檢查每個 API
+// 檢查所有 API，最後再決定是否結束
 (async () => {
   for (const url of urls) {
     await checkAPI(url);
   }
+  if (hasError) process.exit(1);
 })();
