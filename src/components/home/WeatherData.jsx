@@ -88,8 +88,8 @@ const WeatherDataDisplay = React.memo(({ weatherData, onForecastTime }) => {
   };
 
   const getIconSrc = (wxValue) => {
-    const baseIconPath = `/icons/${wxValue}.svg`;
-    const nightIconPath = `/icons/${wxValue}(1).svg`;
+    const baseIconPath = `${import.meta.env.BASE_URL}icons/${wxValue}.svg`;
+    const nightIconPath = `${import.meta.env.BASE_URL}icons/${wxValue}(1).svg`;
 
     if (isNightTime()) {
       const img = new Image();

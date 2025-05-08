@@ -96,7 +96,10 @@ const EarthquakeMap = ({ recentEarthquakes }) => {
     <div className="map-container">
       <Helmet>
         <title>即時地震資訊</title>
-        <link rel="icon" href="/images/volcano.png" />
+        <link
+          rel="icon"
+          href={`${import.meta.env.BASE_URL}/images/volcano.png`}
+        />
       </Helmet>
 
       <MapContainer

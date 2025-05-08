@@ -6,7 +6,10 @@ const ContactPage = () => {
     <div className="contact-page">
       <Helmet>
         <title>聯絡我們</title>
-        <link rel="icon" href="/images/alien.png" />
+        <link
+          rel="icon"
+          href={`${import.meta.env.BASE_URL}/images/alien.png`}
+        />
       </Helmet>
 
       <a href="mailto:dyccc01@gmail.com" className="shiny-cta">
