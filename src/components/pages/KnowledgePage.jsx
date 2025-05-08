@@ -45,7 +45,7 @@ const KnowledgePage = () => {
     <div className="content">
       <Helmet>
         <title>地震基本知識與防災觀念</title>
-        <link rel="icon" href="/images/memo.png" />
+        <link rel="icon" href={`${import.meta.env.BASE_URL}/images/memo.png`} />
       </Helmet>
 
       <div className="knowledge-page noto-sans-sc ">
@@ -70,7 +70,10 @@ const KnowledgePage = () => {
               </li>
               <li>P波的快速傳播特性使其成為地震預警系統的首要檢測信號。</li>
             </ul>
-            <img src="/images/wave/p_wave.gif" alt="P波" />
+            <img
+              src={`${import.meta.env.BASE_URL}/images/wave/p_wave.gif`}
+              alt="P波"
+            />
           </div>
 
           <div className="wave-item hover-effect">
@@ -80,7 +83,10 @@ const KnowledgePage = () => {
               <li>僅能穿過固體，以剪切波的形式傳播，垂直於波的前進方向。</li>
               <li>由於振幅較大且頻率較低，S波對建築物的破壞性通常大於P波。</li>
             </ul>
-            <img src="/images/wave/s_wave.gif" alt="s波" />
+            <img
+              src={`${import.meta.env.BASE_URL}/images/wave/s_wave.gif`}
+              alt="s波"
+            />
           </div>
 
           <div className="wave-item hover-effect">
@@ -96,7 +102,10 @@ const KnowledgePage = () => {
                 它的破壞力集中於地表，特別是在能量集中的地區，影響更為顯著。
               </li>
             </ul>
-            <img src="/images/wave/rayleigh_wave.gif" alt="Rayleigh波" />
+            <img
+              src={`${import.meta.env.BASE_URL}/images/wave/rayleigh_wave.gif`}
+              alt="Rayleigh波"
+            />
           </div>
 
           <div className="wave-item hover-effect">
@@ -106,7 +115,10 @@ const KnowledgePage = () => {
               <li>只在地表傳遞，其破壞範圍局限於震中周圍。</li>
               <li>通常造成地表的橫向位移，對基礎設施影響較大。</li>
             </ul>
-            <img src="/images/wave/love_wave.gif" alt="Love波" />
+            <img
+              src={`${import.meta.env.BASE_URL}/images/wave/love_wave.gif`}
+              alt="Love波"
+            />
           </div>
         </div>
 
