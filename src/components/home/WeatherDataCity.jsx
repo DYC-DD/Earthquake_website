@@ -7,8 +7,10 @@ const isNightTime = () => {
 };
 
 const getIconPath = (weatherCode) => {
-  const baseIconPath = `/icons/${weatherCode}.svg`;
-  const nightIconPath = `/icons/${weatherCode}(1).svg`;
+  const baseIconPath = `${import.meta.env.BASE_URL}icons/${weatherCode}.svg`;
+  const nightIconPath = `${
+    import.meta.env.BASE_URL
+  }icons/${weatherCode}(1).svg`;
 
   if (isNightTime()) {
     const img = new Image();

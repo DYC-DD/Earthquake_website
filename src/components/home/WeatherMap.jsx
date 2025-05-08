@@ -62,7 +62,9 @@ const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
     // 載入 GeoJSON 資料
     const fetchGeojsonData = async () => {
       try {
-        const response = await fetch("/data/Taiwan.json");
+        const response = await fetch(
+          `${import.meta.env.BASE_URL}data/Taiwan.json`
+        );
         if (!response.ok) throw new Error("Failed to fetch GeoJSON data");
         const data = await response.json();
         setGeojsonData(data);
@@ -74,7 +76,9 @@ const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
     // 載入城市中心點座標資料
     const fetchCityCenters = async () => {
       try {
-        const response = await fetch("/data/city_center.json");
+        const response = await fetch(
+          `${import.meta.env.BASE_URL}data/city_center.json`
+        );
         if (!response.ok) throw new Error("Failed to fetch city data");
         const data = await response.json();
         setCityCenters(data);
@@ -144,8 +148,10 @@ const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
   };
 
   const getIconPath = (weatherCode) => {
-    const baseIconPath = `/icons/${weatherCode}.svg`;
-    const nightIconPath = `/icons/${weatherCode}(1).svg`;
+    const baseIconPath = `${import.meta.env.BASE_URL}/icons/${weatherCode}.svg`;
+    const nightIconPath = `${
+      import.meta.env.BASE_URL
+    }/icons/${weatherCode}(1).svg`;
 
     if (isNightTime()) {
       const img = new Image();
@@ -225,7 +231,10 @@ const WeatherMap = ({ weatherDataByCity, selectedCity, townWeatherData }) => {
     <div className="map-container">
       <Helmet>
         <title>各縣市鄉鎮天氣預報</title>
-        <link rel="icon" href="/images/partly_sunny_rain.png" />
+        <link
+          rel="icon"
+          href={`${import.meta.env.BASE_URL}/images/partly_sunny_rain.png`}
+        />
       </Helmet>
 
       <MapContainer
